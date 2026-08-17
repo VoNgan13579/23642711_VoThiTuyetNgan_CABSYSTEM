@@ -31,3 +31,25 @@ Bước 1: Hiểu nghiệp vụ
 - Tăng hiệu quả sử dụng tài xế nhờ cơ chế tìm và ưu tiên tài xế phù hợp.
 - Giúp doanh nghiệp quản lý và ra quyết định tốt hơn nhờ dữ liệu và báo cáo.
 - Tạo nền tảng có thể mở rộng quy mô và phát triển dịch vụ mới trong tương lai.
+
+Bước 2: Xác định stakeholder trong hệ thống
+Stakeholder	Vai trò
+Khách hàng	
+Tài xế 	
+Nhân viên vận hành	
+Ban lãnh đạo	
+Nhà cung cấp	
+
+|             Stakeholder |                                                       Vai trò                                                                                |
+|-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| Khách hàng              | Đăng ký/đăng nhập, quản lý thông tin cá nhân, đặt xe, theo dõi chuyến đi, thanh toán, xem lịch sử và đánh giá tài xế.                        |
+| Tài xế                  | Quản lý hồ sơ và phương tiện, cập nhật trạng thái hoạt động, nhận/từ chối chuyến, cập nhật trạng thái chuyến và vị trí.                      | 
+| Nhân viên vận hành      | Quản lý khách hàng, tài xế, phương tiện và chuyến đi; theo dõi chuyến đang diễn ra; xử lý các trường hợp chuyến bị lỗi và tra cứu giao dịch. | 
+| Ban lãnh đạo            | Theo dõi báo cáo về số lượng chuyến, doanh thu, tỷ lệ hoàn thành, tỷ lệ hủy và hiệu quả hoạt động của tài xế; đưa ra quyết định quản lý.     |
+| Nhà cung cấp thanh toán | Xử lý các giao dịch thanh toán điện tử cho khách hàng thông qua hệ thống tích hợp.                                                           |
+| Nhà cung cấp thông báo  | Cung cấp các kênh gửi thông báo đến khách hàng và tài xế, đồng thời hỗ trợ mở rộng thêm các kênh trong tương lai.                            |
+
+
+
+
+
