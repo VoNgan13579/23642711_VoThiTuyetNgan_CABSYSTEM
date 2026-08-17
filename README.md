@@ -33,14 +33,8 @@ Bước 1: Hiểu nghiệp vụ
 - Tạo nền tảng có thể mở rộng quy mô và phát triển dịch vụ mới trong tương lai.
 
 Bước 2: Xác định stakeholder trong hệ thống
-Stakeholder	Vai trò
-Khách hàng	
-Tài xế 	
-Nhân viên vận hành	
-Ban lãnh đạo	
-Nhà cung cấp	
 
-|             Stakeholder |                                                       Vai trò                                                                                |
+|        Stakeholder      |                                                       Vai trò                                                                                |
 |-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
 | Khách hàng              | Đăng ký/đăng nhập, quản lý thông tin cá nhân, đặt xe, theo dõi chuyến đi, thanh toán, xem lịch sử và đánh giá tài xế.                        |
 | Tài xế                  | Quản lý hồ sơ và phương tiện, cập nhật trạng thái hoạt động, nhận/từ chối chuyến, cập nhật trạng thái chuyến và vị trí.                      | 
@@ -49,6 +43,15 @@ Nhà cung cấp
 | Nhà cung cấp thanh toán | Xử lý các giao dịch thanh toán điện tử cho khách hàng thông qua hệ thống tích hợp.                                                           |
 | Nhà cung cấp thông báo  | Cung cấp các kênh gửi thông báo đến khách hàng và tài xế, đồng thời hỗ trợ mở rộng thêm các kênh trong tương lai.                            |
 
+Xác định tầm quan trọng của stakeholder
+| Stakeholder                        | Mức độ quan trọng    | Lý do                                                                                                                                                                       |
+| ---------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Khách hàng**                     | ⭐⭐⭐⭐⭐ Rất cao        | Là người trực tiếp sử dụng hệ thống để đặt xe, theo dõi chuyến, thanh toán và đánh giá. Sự hài lòng của khách hàng ảnh hưởng trực tiếp đến doanh thu và chất lượng dịch vụ. |
+| **Tài xế**                         | ⭐⭐⭐⭐⭐ Rất cao        | Là người trực tiếp thực hiện chuyến đi. Tài xế ảnh hưởng đến khả năng đáp ứng yêu cầu, thời gian phục vụ và chất lượng chuyến đi.                                           |
+| **Nhân viên vận hành**             | ⭐⭐⭐⭐⭐ Rất cao        | Quản lý và giám sát hoạt động của hệ thống, xử lý các trường hợp phát sinh và hỗ trợ khách hàng, tài xế.                                                                    |
+| **Ban lãnh đạo**                   | ⭐⭐⭐⭐ Cao             | Đưa ra định hướng, phê duyệt yêu cầu và theo dõi các chỉ số kinh doanh như doanh thu, số chuyến, tỷ lệ hoàn thành và tỷ lệ hủy.                                             |
+| **Nhà cung cấp thanh toán**        | ⭐⭐⭐ Trung bình – Cao | Đảm bảo các giao dịch thanh toán điện tử được thực hiện. Nếu dịch vụ gặp lỗi có thể ảnh hưởng đến quá trình thanh toán.                                                     |
+| **Nhà cung cấp dịch vụ thông báo** | ⭐⭐⭐ Trung bình – Cao | Đảm bảo hệ thống gửi thông báo đến khách hàng và tài xế. Tuy nhiên đây là hệ thống bên ngoài nên mức độ ảnh hưởng thấp hơn các nhóm sử dụng trực tiếp.                      |
 
 
 
