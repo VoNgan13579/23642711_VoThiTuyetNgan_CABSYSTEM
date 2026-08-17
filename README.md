@@ -1,5 +1,5 @@
 # 23642711_VoThiTuyetNgan_CABSYSTEM
-Bước 1: Hiểu nghiệp vụ
+**Bước 1: Hiểu nghiệp vụ**
 1. Vấn đề hiện tại:
 - Việc phân công tài xế chủ yếu được thực hiện thủ công
 - Khách hàng khó theo dõi trạng thái chuyến đi 
@@ -32,7 +32,7 @@ Bước 1: Hiểu nghiệp vụ
 - Giúp doanh nghiệp quản lý và ra quyết định tốt hơn nhờ dữ liệu và báo cáo.
 - Tạo nền tảng có thể mở rộng quy mô và phát triển dịch vụ mới trong tương lai.
 
-Bước 2: Xác định stakeholder trong hệ thống
+**Bước 2: Xác định stakeholder trong hệ thống**
 
 |        Stakeholder      |                                                       Vai trò                                                                                |
 |-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
@@ -40,19 +40,62 @@ Bước 2: Xác định stakeholder trong hệ thống
 | Tài xế                  | Quản lý hồ sơ và phương tiện, cập nhật trạng thái hoạt động, nhận/từ chối chuyến, cập nhật trạng thái chuyến và vị trí.                      | 
 | Nhân viên vận hành      | Quản lý khách hàng, tài xế, phương tiện và chuyến đi; theo dõi chuyến đang diễn ra; xử lý các trường hợp chuyến bị lỗi và tra cứu giao dịch. | 
 | Ban lãnh đạo            | Theo dõi báo cáo về số lượng chuyến, doanh thu, tỷ lệ hoàn thành, tỷ lệ hủy và hiệu quả hoạt động của tài xế; đưa ra quyết định quản lý.     |
-| Nhà cung cấp thanh toán | Xử lý các giao dịch thanh toán điện tử cho khách hàng thông qua hệ thống tích hợp.                                                           |
+| Nhà cung cấp thanh toán | Xử lý các giao dịch thanh toán trực tuyến.                                                                                                   |
 | Nhà cung cấp thông báo  | Cung cấp các kênh gửi thông báo đến khách hàng và tài xế, đồng thời hỗ trợ mở rộng thêm các kênh trong tương lai.                            |
 
-Xác định tầm quan trọng của stakeholder
-| Stakeholder                        | Mức độ quan trọng    | Lý do                                                                                                                                                                       |
-| ---------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Khách hàng**                     | ⭐⭐⭐⭐⭐ Rất cao        | Là người trực tiếp sử dụng hệ thống để đặt xe, theo dõi chuyến, thanh toán và đánh giá. Sự hài lòng của khách hàng ảnh hưởng trực tiếp đến doanh thu và chất lượng dịch vụ. |
-| **Tài xế**                         | ⭐⭐⭐⭐⭐ Rất cao        | Là người trực tiếp thực hiện chuyến đi. Tài xế ảnh hưởng đến khả năng đáp ứng yêu cầu, thời gian phục vụ và chất lượng chuyến đi.                                           |
-| **Nhân viên vận hành**             | ⭐⭐⭐⭐⭐ Rất cao        | Quản lý và giám sát hoạt động của hệ thống, xử lý các trường hợp phát sinh và hỗ trợ khách hàng, tài xế.                                                                    |
-| **Ban lãnh đạo**                   | ⭐⭐⭐⭐ Cao             | Đưa ra định hướng, phê duyệt yêu cầu và theo dõi các chỉ số kinh doanh như doanh thu, số chuyến, tỷ lệ hoàn thành và tỷ lệ hủy.                                             |
-| **Nhà cung cấp thanh toán**        | ⭐⭐⭐ Trung bình – Cao | Đảm bảo các giao dịch thanh toán điện tử được thực hiện. Nếu dịch vụ gặp lỗi có thể ảnh hưởng đến quá trình thanh toán.                                                     |
-| **Nhà cung cấp dịch vụ thông báo** | ⭐⭐⭐ Trung bình – Cao | Đảm bảo hệ thống gửi thông báo đến khách hàng và tài xế. Tuy nhiên đây là hệ thống bên ngoài nên mức độ ảnh hưởng thấp hơn các nhóm sử dụng trực tiếp.                      |
+``` mermaid
+quadrantChart
+    title Stakeholder Matrix - CAB System
+    x-axis "Mức độ quan tâm thấp" --> "Mức độ quan tâm cao"
+    y-axis "Quyền lực thấp" --> "Quyền lực cao"
 
+    quadrant-1 "Quản lý chặt chẽ"
+    quadrant-2 "Giữ hài lòng"
+    quadrant-3 "Theo dõi"
+    quadrant-4 "Giữ thông tin"
 
+    "Ban lãnh đạo": [0.75, 0.90]
+    "Nhân viên vận hành": [0.90, 0.80]
+    "Khách hàng": [0.95, 0.55]
+    "Tài xế": [0.90, 0.55]
+    "Nhà cung cấp thanh toán": [0.55, 0.65]
+    "Nhà cung cấp thông báo": [0.45, 0.45]
+``` 
 
+**Bước 3: Mục đích của nghiệp vụ**
+1. Tối ưu hóa và tự động hóa quy trình vận hành
+
+Tự động hóa luồng phân công: Loại bỏ việc phân công thủ công từ tổng đài bằng cơ chế tự động tìm và ưu tiên tài xế phù hợp dựa trên vị trí GPS, loại xe và trạng thái sẵn sàng.
+
+Tự động chuyển tiếp yêu cầu: Tự động luôn chuyển chuyến đi sang tài xế tiếp theo nếu tài xế đầu tiên từ chối hoặc không phản hồi, giúp khách hàng không phải tạo lại yêu cầu.
+
+Rút ngắn thời gian chờ: Giảm tối đa thời gian chờ xe (ETA) của khách hàng nhờ cơ chế ưu tiên tài xế gần nhất.
+
+2. Nâng cao trải nghiệm người dùng và linh hoạt thanh toán
+
+Theo dõi thời gian thực: Cho phép khách hàng theo dõi vị trí tài xế, hành trình di chuyển và thời gian dự kiến đến ngay trên ứng dụng.
+
+Đa dạng phương thức thanh toán: Hỗ trợ linh hoạt cả Thanh toán tiền mặt (trả trực tiếp cho tài xế) và Thanh toán điện tử / Chuyển khoản (tích hợp cổng thanh toán bên ngoài an toàn, không lưu trữ dữ liệu thẻ nhạy cảm).
+
+Thông báo tức thời: Cung cấp hệ thống thông báo đa kênh (App Push, SMS, Email) ở các mốc quan trọng: nhận chuyến, tài xế đến, hoàn thành và kết quả thanh toán.
+
+Đánh giá dịch vụ: Thu thập phản hồi và đánh giá từ khách hàng sau mỗi chuyến đi để nâng cao chất lượng tài xế.
+
+3. Đảm bảo hiệu năng cao và chịu tải thời điểm nhu cầu tăng cao
+
+Chịu tải cao đồng thời: Đảm bảo hệ thống hoạt động ổn định, mượt mà ngay cả khi có số lượng lớn khách hàng và tài xế cùng truy cập vào các khung giờ cao điểm (giờ tan tầm, thời tiết xấu, lễ tết).
+
+Kiến trúc độc lập (Decoupled Architecture): Cách ly rủi ro để khi xảy ra sự cố ở các chức năng phụ như thanh toán hay thông báo thì luồng đặt xe cốt lõi vẫn hoạt động bình thường.
+
+Mở rộng linh hoạt trong tương lai: Tạo tiền đề kỹ thuật để dễ dàng bổ sung thêm loại hình dịch vụ mới, phương thức thanh toán mới hoặc nhà cung cấp thông báo mới mà không phải xây dựng lại toàn bộ hệ thống.
+
+4. Quản lý tập trung và hỗ trợ ra quyết định kinh doanh
+
+Tập trung dữ liệu master: Quản lý tập trung toàn bộ thông tin khách hàng, tài xế, phương tiện, chuyến đi và lịch sử giao dịch trên một giao diện quản trị duy nhất.
+
+Báo cáo và đo lường: Cung cấp cho Ban lãnh đạo hệ thống báo cáo chuyên sâu về doanh thu, tổng số chuyến, tỷ lệ hoàn thành, tỷ lệ hủy chuyến và hiệu suất hoạt động của tài xế.
+
+Bảo mật và truy vết: Phân quyền truy cập theo vai trò (RBAC) để kiểm soát các thao tác nhạy cảm của nhân viên vận hành, đồng thời ghi nhận vết hệ thống (Audit Logs) phục vụ tra cứu khi xảy ra sự cố.
+
+**Bước 4: Xác định phạm vi cần làm cho dự án trong 7 tuần**
 
