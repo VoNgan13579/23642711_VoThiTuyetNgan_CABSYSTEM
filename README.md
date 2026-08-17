@@ -19,3 +19,15 @@ Bước 1: Hiểu nghiệp vụ
 - Quản lý tập trung dữ liệu và hỗ trợ báo cáo hoạt động kinh doanh.
 - Đảm bảo hệ thống ổn định, bảo mật và có khả năng mở rộng.
 - Tạo nền tảng linh hoạt để phát triển thêm các tính năng trong tương lai.
+4. Ai sẽ tham gia và sử dụng hệ thống?
+- Khách hàng: đặt xe, theo dõi chuyến, thanh toán và đánh giá.
+- Tài xế: nhận chuyến, cập nhật trạng thái và thông tin vị trí.
+- Nhân viên vận hành: quản lý khách hàng, tài xế, phương tiện và chuyến đi.
+- Ban lãnh đạo: theo dõi báo cáo, doanh thu và hiệu quả hoạt động.
+5. Hệ thống mới mang lại giá trị kinh doanh gì?
+- Giảm chi phí và thời gian vận hành nhờ tự động hóa.
+- Tăng doanh thu nhờ phục vụ được nhiều khách hàng hơn.
+- Nâng cao trải nghiệm khách hàng thông qua đặt xe và theo dõi chuyến theo thời gian thực.
+- Tăng hiệu quả sử dụng tài xế nhờ cơ chế tìm và ưu tiên tài xế phù hợp.
+- Giúp doanh nghiệp quản lý và ra quyết định tốt hơn nhờ dữ liệu và báo cáo.
+- Tạo nền tảng có thể mở rộng quy mô và phát triển dịch vụ mới trong tương lai.
