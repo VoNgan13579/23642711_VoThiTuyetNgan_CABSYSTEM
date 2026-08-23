@@ -101,48 +101,54 @@ Bảo mật và truy vết: Phân quyền truy cập theo vai trò (RBAC) để 
 Được nha, nếu làm **Bước 4** thì nên chia rõ thành **Trong phạm vi** và **Ngoài phạm vi**, đồng thời giữ ở mức cơ bản để phù hợp 7 tuần.
 
 ## **Bước 4: Xác định phạm vi dự án trong 7 tuần**
-### **4.1. Trong phạm vi (In Scope)**
-
-| **Hạng mục**               | **Phạm vi thực hiện**                                                                                             |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| **Xác thực & phân quyền**  | Đăng ký, đăng nhập, đăng xuất, xác thực người dùng và phân quyền theo vai trò.                                    |
-| **Quản lý khách hàng**     | Quản lý thông tin khách hàng, cập nhật hồ sơ, xem lịch sử chuyến.                                                 |
-| **Quản lý tài xế**         | Quản lý hồ sơ tài xế, thông tin phương tiện, trạng thái hoạt động và vị trí tài xế.                               |
-| **Đặt xe**                 | Nhập điểm đón, điểm đến, chọn loại xe và gửi yêu cầu đặt xe.                                                      |
-| **Tìm & phân công tài xế** | Tìm tài xế phù hợp dựa trên trạng thái và vị trí; chuyển sang tài xế khác khi tài xế từ chối hoặc không phản hồi. |
-| **Quản lý chuyến đi**      | Tài xế nhận/từ chối chuyến và cập nhật trạng thái: đến điểm đón → đón khách → đang di chuyển → hoàn thành.        |
-| **Tính cước & thanh toán** | Tính số tiền phải trả, hỗ trợ tiền mặt và thanh toán trực tuyến thông qua nhà cung cấp bên ngoài.                    |
-| **Thông báo**              | Gửi thông báo cho khách hàng và tài xế về các trạng thái chính của chuyến đi và thanh toán.                       |
-| **Quản lý vận hành**       | Nhân viên vận hành quản lý khách hàng, tài xế, phương tiện, chuyến đi và tra cứu giao dịch.                       |
-| **Báo cáo cơ bản**         | Thống kê số chuyến, doanh thu, chuyến hoàn thành và chuyến hủy.                                                   |
-| **Bảo mật & lưu vết**      | Phân quyền truy cập và lưu vết các thao tác quản trị quan trọng.                                                  |
-
-### **4.2. Ngoài phạm vi (Out of Scope)**
-
-| **Hạng mục**                                    | **Lý do đưa ra ngoài phạm vi**                                            |
-| ----------------------------------------------- | ------------------------------------------------------------------------- |
-| **AI/ML nâng cao**                              | Không cần thiết cho phiên bản vận hành cơ bản và vượt quá phạm vi 7 tuần. |
-| **Tính giá động (Dynamic Pricing)**             | Quy tắc tính giá chưa được khách hàng xác định rõ.                        |
-| **Dự đoán nhu cầu đặt xe**                      | Là chức năng nâng cao, chưa cần thiết cho giai đoạn đầu.                  |
-| **Khuyến mãi, mã giảm giá, tích điểm**          | Không phải chức năng cốt lõi của hệ thống đặt xe ban đầu.                 |
-| **Chương trình thành viên**                     | Chưa cần thiết để hệ thống vận hành.                                      |
-| **Tích hợp nhiều cổng thanh toán**              | Giai đoạn đầu chỉ cần tích hợp một nhà cung cấp thanh toán.               |
-| **Tích hợp nhiều nền tảng thông báo nâng cao**  | Chỉ triển khai kênh thông báo cần thiết trước.                            |
-| **Phân tích dữ liệu nâng cao**                  | Chỉ thực hiện báo cáo cơ bản, chưa xây dựng BI/Analytics chuyên sâu.      |
-| **Mở rộng nhiều loại hình dịch vụ**             | Chưa triển khai trong phiên bản đầu tiên.                                 |
-| **Các tính năng chưa được khách hàng xác nhận** | Chờ xác định rõ yêu cầu trước khi đưa vào phát triển.                     |
+4.1. Phạm vi thực hiện
+Xác thực và quản lý người dùng (Authentication):
+- Đăng ký, đăng nhập, đăng xuất.
+- Xác thực người dùng.
+- Phân quyền theo vai trò.
+Hệ thống quản lý khách hàng:
+- Quản lý thông tin khách hàng.
+- Đặt xe.
+- Theo dõi chuyến đi.
+- Xem lịch sử chuyến đi.
+- Đánh giá tài xế.
+Hệ thống quản lý tài xế:
+- Quản lý thông tin tài xế và phương tiện.
+- Cập nhật trạng thái sẵn sàng.
+- Nhận hoặc từ chối chuyến.
+- Cập nhật trạng thái chuyến đi.
+Hệ thống quản lý đặt xe và chuyến đi:
+- Tiếp nhận yêu cầu đặt xe.
+- Tìm và phân công tài xế phù hợp.
+- Theo dõi trạng thái chuyến.
+- Xử lý trường hợp tài xế từ chối hoặc không phản hồi.
+Hệ thống tính cước và thanh toán:
+- Tính số tiền chuyến đi.
+- Hỗ trợ thanh toán tiền mặt.
+- Hỗ trợ thanh toán điện tử thông qua nhà cung cấp bên ngoài.
+Hệ thống thông báo:
+- Thông báo các trạng thái chính của chuyến đi cho khách hàng và tài xế.
+Hệ thống quản lý vận hành:
+- Nhân viên vận hành quản lý khách hàng, tài xế, phương tiện và chuyến đi.
+- Theo dõi và hỗ trợ xử lý các chuyến gặp sự cố.
+4.2. Ngoài phạm vi
+- AI/ML và các chức năng dự đoán nâng cao.
+- Tính giá động.
+- Khuyến mãi, tích điểm và chương trình thành viên.
+- Phân tích dữ liệu nâng cao.
+- Mở rộng nhiều loại hình dịch vụ.
 
 ### **4.3. Luồng cốt lõi trong 7 tuần**
 
-| **Mô-đun**                            | **Phạm vi chức năng chính**                                                                                                             |
-| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| **1. Quản lý người dùng & xác thực**  | Đăng ký, đăng nhập, đăng xuất, xác thực người dùng, cập nhật thông tin cá nhân, phân quyền theo vai trò.                                |
-| **2. Quản lý khách hàng**             | Quản lý hồ sơ khách hàng, tạo yêu cầu đặt xe, nhập điểm đón và điểm đến, lựa chọn loại xe, xem lịch sử chuyến.                          |
-| **3. Quản lý tài xế**                 | Quản lý hồ sơ tài xế, thông tin phương tiện, trạng thái sẵn sàng/không sẵn sàng và thông tin vị trí.                                    |
-| **4. Quản lý đặt xe & chuyến đi**     | Tạo chuyến, tìm tài xế phù hợp, gửi yêu cầu cho tài xế, chấp nhận/từ chối chuyến, cập nhật trạng thái chuyến và hoàn thành chuyến.      |
-| **5. Quản lý tính cước & thanh toán** | Tính số tiền phải trả, hỗ trợ tiền mặt và thanh toán trực tuyến thông qua nhà cung cấp bên ngoài, lưu kết quả giao dịch.                   |
-| **6. Quản lý thông báo**              | Gửi thông báo cho khách hàng và tài xế khi có các sự kiện chính như nhận yêu cầu, nhận chuyến, hoàn thành chuyến và kết quả thanh toán. |
-| **7. Quản trị & vận hành**            | Nhân viên vận hành quản lý khách hàng, tài xế, phương tiện, chuyến đi và tra cứu giao dịch; hỗ trợ xử lý các trường hợp chuyến bị lỗi.  |
+| **Tuần**   | **Nội dung thực hiện**                                       |
+| ---------- | ------------------------------------------------------------ |
+| **Tuần 1** | Phân tích yêu cầu, xác định phạm vi và stakeholder           |
+| **Tuần 2** | Phân tích nghiệp vụ, xác định quy trình và yêu cầu chức năng |
+| **Tuần 3** | Thiết kế hệ thống và cơ sở dữ liệu                           |
+| **Tuần 4** | Xây dựng module xác thực & quản lý người dùng                |
+| **Tuần 5** | Xây dựng module quản lý khách hàng, tài xế & đặt xe          |
+| **Tuần 6** | Xây dựng module chuyến đi, thanh toán & thông báo            |
+| **Tuần 7** | Kiểm thử, sửa lỗi, hoàn thiện và triển khai hệ thống         |
 
 
 
