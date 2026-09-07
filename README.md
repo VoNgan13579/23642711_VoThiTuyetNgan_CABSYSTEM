@@ -179,7 +179,7 @@ g. Hệ thống quản lý vận hành:
 |      18 | Báo cáo            | Báo cáo hoạt động         | Tổng hợp dữ liệu → Thống kê chuyến, doanh thu → Xem báo cáo                | NV vận hành, Ban lãnh đạo                   | Báo cáo & quản lý      | Chuyến đi, Giao dịch, Báo cáo  |
 
 
-## **Bước 6: Phân rã các yêu cầu chức năng**
+## **Bước 6: Phân Rã Chi Tiết Yêu Cầu Chức Năng (Functional Requirements Breakdown)**
 
 | **STT** | **Yêu cầu chức năng**         | **Các chức năng con cần thực hiện**                                                                                                                          |
 | ------: | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
