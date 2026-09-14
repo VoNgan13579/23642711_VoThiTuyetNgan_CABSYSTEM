@@ -1417,28 +1417,39 @@ Kết thúc
 
 # **Bước 10: Phân tích quy tắc nghiệp vụ**
 
-|    STT | Nhóm nghiệp vụ        | Quy tắc nghiệp vụ                                                                                                                |
-| -----: | --------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-|  **1** | Xác thực              | Người dùng phải đăng nhập và được xác thực trước khi sử dụng các chức năng yêu cầu tài khoản.                                    |
-|  **2** | Phân quyền            | Người dùng chỉ được thực hiện các chức năng phù hợp với vai trò và quyền được cấp.                                               |
-|  **3** | Trạng thái tài xế     | Chỉ tài xế có trạng thái **Sẵn sàng** mới được hệ thống đưa vào danh sách tìm tài xế.                                            |
-|  **4** | Loại xe               | Tài xế được đề xuất phải có phương tiện phù hợp với loại xe mà khách hàng đã lựa chọn.                                           |
-|  **5** | Vị trí tài xế         | Hệ thống ưu tiên tài xế có vị trí gần điểm đón của khách hàng.                                                                   |
-|  **6** | Đánh giá tài xế       | Khi các tài xế có điều kiện phù hợp, hệ thống có thể **ưu tiên tài xế có rating cao hơn**.                                       |
-|  **7** | Phân công tài xế      | Sau khi một tài xế chấp nhận chuyến, hệ thống phải xác nhận tài xế đó và không tiếp tục gửi cùng chuyến cho tài xế khác.         |
-|  **8** | Tài xế từ chối        | Nếu tài xế từ chối chuyến, hệ thống phải tiếp tục tìm tài xế phù hợp khác.                                                       |
-|  **9** | Tài xế không phản hồi | Nếu tài xế không phản hồi trong thời gian quy định, hệ thống chuyển yêu cầu sang tài xế khác. **Thời gian cụ thể chờ xác nhận.** |
-| **10** | Không tìm được tài xế | Nếu không còn tài xế phù hợp, hệ thống phải thông báo rõ ràng cho khách hàng.                                                    |
-| **11** | Trạng thái chuyến     | Chuyến đi phải được cập nhật theo trạng thái: **Đã nhận → Đã đến điểm đón → Đã đón khách → Đang di chuyển → Hoàn thành**.        |
-| **12** | Theo dõi chuyến       | Khi chuyến đang diễn ra, hệ thống phải lưu/cập nhật thông tin vị trí tài xế để hỗ trợ theo dõi chuyến.                           |
-| **13** | Tính cước             | Chỉ thực hiện tính cước sau khi chuyến đi hoàn thành.                                                                            |
-| **14** | Thanh toán            | Khách hàng có thể thanh toán bằng **tiền mặt hoặc phương thức thanh toán điện tử**.                                              |
-| **15** | Bảo mật thanh toán    | Thông tin nhạy cảm của thẻ hoặc tài khoản thanh toán không được lưu trực tiếp trong hệ thống CAB.                                |
-| **16** | Thanh toán thất bại   | Nếu thanh toán điện tử thất bại, hệ thống phải thông báo cho khách hàng và cho phép xử lý lại theo chính sách doanh nghiệp.      |
-| **17** | Đánh giá              | Khách hàng chỉ được đánh giá tài xế sau khi chuyến đi đã hoàn thành.                                                             |
-| **18** | Quản trị              | Các thao tác quản trị phải được kiểm soát bằng quyền truy cập; thao tác quan trọng phải được lưu vết.                            |
-| **19** | Thông báo             | Hệ thống phải gửi thông báo khi có các sự kiện quan trọng như nhận chuyến, tài xế đến, hoàn thành chuyến và kết quả thanh toán.  |
-| **20** | Báo cáo               | Ban lãnh đạo được xem các báo cáo về số lượng chuyến, doanh thu, tỷ lệ hoàn thành, tỷ lệ hủy và hiệu quả tài xế.                 |
+| STT | Nhóm quy tắc | Quy tắc nghiệp vụ                                                                                                                                | Áp dụng cho                                   |
+| --: | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------- |
+|   1 | Tài khoản    | Mỗi tài khoản phải có thông tin đăng ký hợp lệ và không được trùng tài khoản đã tồn tại trong hệ thống.                                          | Đăng ký tài khoản                             |
+|   2 | Tài khoản    | Người dùng phải đăng nhập thành công trước khi sử dụng các chức năng yêu cầu xác thực.                                                           | Tất cả chức năng có đăng nhập                 |
+|   3 | Tài khoản    | Người dùng chỉ được truy cập các chức năng phù hợp với vai trò được hệ thống phân quyền.                                                         | Khách hàng, Tài xế, NV vận hành, Ban lãnh đạo |
+|   4 | Tài khoản    | Khi đăng xuất, phiên đăng nhập hiện tại phải được kết thúc.                                                                                      | Đăng xuất hệ thống                            |
+|   5 | Khách hàng   | Khách hàng không được tạo yêu cầu đặt xe mới khi đang có chuyến chưa hoàn thành.                                                                 | Đặt xe                                        |
+|   6 | Đặt xe       | Yêu cầu đặt xe phải có đầy đủ thông tin điểm đón, điểm đến và loại xe hợp lệ.                                                                    | Đặt xe                                        |
+|   7 | Đặt xe       | Hệ thống chỉ tạo yêu cầu chuyến khi thông tin đặt xe hợp lệ.                                                                                     | Đặt xe                                        |
+|   8 | Tài xế       | Tài xế chỉ được nhận chuyến khi đang ở trạng thái sẵn sàng và yêu cầu chuyến còn hiệu lực.                                                       | Nhận chuyến                                   |
+|   9 | Tài xế       | Tài xế đang thực hiện chuyến không được chuyển sang trạng thái sẵn sàng để nhận chuyến mới.                                                      | Cập nhật trạng thái sẵn sàng                  |
+|  10 | Phân công    | Hệ thống ưu tiên tài xế phù hợp với loại xe và ở vị trí gần khách hàng.                                                                          | Tìm kiếm và phân công tài xế                  |
+|  11 | Phân công    | Nếu tài xế không phản hồi hoặc từ chối chuyến trong thời gian quy định, hệ thống chuyển yêu cầu sang tài xế phù hợp tiếp theo.                   | Xử lý tài xế không phản hồi hoặc từ chối      |
+|  12 | Phân công    | Một yêu cầu chuyến chỉ được phân công cho một tài xế tại một thời điểm.                                                                          | Tìm kiếm và phân công tài xế                  |
+|  13 | Chuyến đi    | Chỉ tài xế được phân công mới được cập nhật trạng thái và vị trí của chuyến.                                                                     | Cập nhật chuyến đi                            |
+|  14 | Chuyến đi    | Khi chuyến đã kết thúc, hệ thống không cho phép tiếp tục cập nhật trạng thái chuyến.                                                             | Cập nhật trạng thái chuyến                    |
+|  15 | Chuyến đi    | Khách hàng chỉ được theo dõi thông tin của chuyến mà mình đã đặt.                                                                                | Theo dõi trạng thái chuyến đi                 |
+|  16 | Cước phí     | Cước chuyến đi phải được tính dựa trên thông tin chuyến và loại xe theo quy định của hệ thống.                                                   | Tính cước chuyến đi                           |
+|  17 | Thanh toán   | Chuyến đi phải có số tiền cước được xác định trước khi thực hiện thanh toán.                                                                     | Thanh toán                                    |
+|  18 | Thanh toán   | Hệ thống phải ghi nhận phương thức thanh toán mà khách hàng lựa chọn.                                                                            | Lựa chọn và thực hiện thanh toán              |
+|  19 | Thanh toán   | Đối với thanh toán điện tử, kết quả giao dịch phải được xác nhận từ nhà cung cấp thanh toán trước khi cập nhật trạng thái thanh toán thành công. | Thanh toán điện tử                            |
+|  20 | Thanh toán   | Khi giao dịch thất bại, hệ thống phải thông báo cho khách hàng và cho phép thực hiện thanh toán lại.                                             | Thanh toán thất bại                           |
+|  21 | Thanh toán   | Giao dịch chỉ được ghi nhận là thanh toán thành công khi hệ thống nhận được kết quả hợp lệ.                                                      | Xử lý kết quả thanh toán                      |
+|  22 | Thông báo    | Khi trạng thái chuyến hoặc kết quả thanh toán thay đổi, hệ thống phải gửi thông báo đến người dùng liên quan.                                    | Gửi thông báo                                 |
+|  23 | Thông báo    | Nếu kênh thông báo chính không khả dụng, hệ thống có thể sử dụng kênh thông báo phù hợp khác.                                                    | Gửi thông báo                                 |
+|  24 | Đánh giá     | Khách hàng chỉ được đánh giá tài xế sau khi chuyến đi đã hoàn thành.                                                                             | Đánh giá tài xế                               |
+|  25 | Đánh giá     | Một chuyến đi chỉ được khách hàng đánh giá một lần.                                                                                              | Đánh giá tài xế                               |
+|  26 | Vận hành     | Nhân viên vận hành chỉ được theo dõi và xử lý các chuyến thuộc phạm vi quyền hạn của mình.                                                       | Quản lý vận hành                              |
+|  27 | Giao dịch    | Nhân viên vận hành chỉ được tra cứu thông tin giao dịch theo quyền được cấp.                                                                     | Tra cứu giao dịch                             |
+|  28 | Báo cáo      | Báo cáo chỉ được tạo từ dữ liệu đã được hệ thống ghi nhận.                                                                                       | Báo cáo                                       |
+|  29 | Báo cáo      | Người dùng chỉ được xem các loại báo cáo phù hợp với quyền của mình.                                                                             | NV vận hành, Ban lãnh đạo                     |
+|  30 | Báo cáo      | Nếu khoảng thời gian được chọn không có dữ liệu, hệ thống phải thông báo không có dữ liệu thay vì tạo báo cáo rỗng không xác định.               | Báo cáo                                       |
+
 
 
 
