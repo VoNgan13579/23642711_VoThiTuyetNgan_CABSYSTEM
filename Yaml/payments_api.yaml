@@ -1,0 +1,180 @@
+openapi: '3.0.3'
+info:
+  title: CAB System API - Payments
+  description: 'Tính cước & Thanh toán'
+  version: '1.0.0'
+  contact:
+    name: Vo Thi Tuyet Ngan
+    email: support@cab-system.com
+servers:
+  - url: https://api.cab-system.com/v1
+    description: Production Server
+  - url: http://localhost:8080/v1
+    description: Development Server
+tags:
+  - name: Payments
+    description: 'Tính cước & Thanh toán'
+paths:
+  '/payments/calculate':
+    post:
+      tags:
+        - Payments
+      summary: 'Tính toán cước phí chuyến đi'
+      operationId: calculateFare
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+  '/payments':
+    get:
+      tags:
+        - Payments
+      summary: 'Tra cứu danh sách / lịch sử giao dịch thanh toán'
+      operationId: getPayments
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      tags:
+        - Payments
+      summary: 'Thực hiện thanh toán giao dịch'
+      operationId: processPayment
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    RegisterRequest:
+      type: object
+      properties:
+        phone:
+          type: string
+          example: '0987654321'
+        password:
+          type: string
+          example: '123456'
+        full_name:
+          type: string
+          example: Vo Thi Tuyet Ngan
+        role:
+          type: string
+          example: CUSTOMER
+    LoginRequest:
+      type: object
+      properties:
+        phone:
+          type: string
+          example: '0987654321'
+        password:
+          type: string
+          example: '123456'
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOi...
+        user_id:
+          type: string
+          example: usr_001
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+        full_name:
+          type: string
+        phone:
+          type: string
+    UpdateProfileRequest:
+      type: object
+      properties:
+        full_name:
+          type: string
+        email:
+          type: string
+    DriverProfile:
+      type: object
+      properties:
+        id:
+          type: string
+        full_name:
+          type: string
+        license_number:
+          type: string
+    Vehicle:
+      type: object
+      properties:
+        plate_number:
+          type: string
+        brand:
+          type: string
+        model:
+          type: string
+    CreateTripRequest:
+      type: object
+      properties:
+        pickup_address:
+          type: string
+        dropoff_address:
+          type: string
+        vehicle_type:
+          type: string
+    Trip:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        pickup_address:
+          type: string
+        dropoff_address:
+          type: string
+        fare_amount:
+          type: number
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+        trip_id:
+          type: string
+        amount:
+          type: number
+        status:
+          type: string
