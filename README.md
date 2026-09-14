@@ -180,29 +180,40 @@ g. Hệ thống quản lý vận hành:
 
 
 ## **Bước 6: Phân Rã Chi Tiết Yêu Cầu Chức Năng (Functional Requirements Breakdown)**
+| STT | Nhóm chức năng     | Yêu cầu chức năng                                   | Tác nhân                            |
+| --: | ------------------ | --------------------------------------------------- | ----------------------------------- |
+|   1 | Xác thực           | Đăng ký tài khoản                                   | Khách hàng, Tài xế                  |
+|   2 | Xác thực           | Đăng nhập hệ thống                                  | Khách hàng, Tài xế, NV vận hành     |
+|   3 | Xác thực           | Đăng xuất hệ thống                                  | Khách hàng, Tài xế, NV vận hành     |
+|   4 | Xác thực           | Xác thực và phân quyền người dùng theo vai trò      | Hệ thống                            |
+|   5 | Quản lý khách hàng | Xem và cập nhật thông tin cá nhân                   | Khách hàng                          |
+|   6 | Quản lý khách hàng | Tạo yêu cầu đặt xe                                  | Khách hàng                          |
+|   7 | Quản lý khách hàng | Theo dõi trạng thái chuyến đi                       | Khách hàng                          |
+|   8 | Quản lý khách hàng | Xem lịch sử chuyến đi và đánh giá tài xế            | Khách hàng                          |
+|   9 | Quản lý tài xế     | Xem và cập nhật hồ sơ tài xế                        | Tài xế, NV vận hành                 |
+|  10 | Quản lý tài xế     | Quản lý thông tin phương tiện                       | Tài xế, NV vận hành                 |
+|  11 | Quản lý tài xế     | Cập nhật trạng thái sẵn sàng                        | Tài xế                              |
+|  12 | Quản lý tài xế     | Nhận chuyến                                         | Tài xế                              |
+|  13 | Quản lý tài xế     | Từ chối chuyến                                      | Tài xế                              |
+|  14 | Quản lý chuyến đi  | Tiếp nhận và xử lý yêu cầu đặt xe                   | Hệ thống                            |
+|  15 | Quản lý chuyến đi  | Tìm kiếm và phân công tài xế phù hợp                | Hệ thống                            |
+|  16 | Quản lý chuyến đi  | Xử lý trường hợp tài xế không phản hồi hoặc từ chối | Hệ thống                            |
+|  17 | Quản lý chuyến đi  | Cập nhật và theo dõi trạng thái, vị trí chuyến đi   | Tài xế, Hệ thống                    |
+|  18 | Quản lý vận hành   | Theo dõi và quản lý các chuyến đang diễn ra         | NV vận hành                         |
+|  19 | Quản lý vận hành   | Hỗ trợ xử lý chuyến đi gặp sự cố                    | NV vận hành                         |
+|  20 | Quản lý vận hành   | Tra cứu thông tin giao dịch                         | NV vận hành                         |
+|  21 | Tính cước          | Tính cước chuyến đi                                 | Hệ thống                            |
+|  22 | Thanh toán         | Lựa chọn và thực hiện thanh toán                    | Khách hàng, Tài xế                  |
+|  23 | Thanh toán         | Xử lý và ghi nhận kết quả thanh toán                | Hệ thống, Nhà cung cấp thanh toán   |
+|  24 | Thanh toán         | Xử lý giao dịch thất bại và thanh toán lại          | Hệ thống, Khách hàng                |
+|  25 | Thông báo          | Gửi thông báo về trạng thái chuyến đi và thanh toán | Hệ thống, Nhà cung cấp thông báo    |
+|  26 | Báo cáo            | Tổng hợp, thống kê và xem báo cáo hoạt động         | Hệ thống, NV vận hành, Ban lãnh đạo |
 
-| **STT** | **Yêu cầu chức năng**         | **Các chức năng con cần thực hiện**                                                                                                                          |
-| ------: | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-|   **1** | **Đăng ký tài khoản**         | Nhập thông tin → Kiểm tra thông tin → Tạo tài khoản → Thông báo đăng ký thành công                                                                           |
-|   **2** | **Đăng nhập & xác thực**      | Nhập tài khoản/mật khẩu → Kiểm tra thông tin → Xác thực → Cấp quyền truy cập theo vai trò                                                                    |
-|   **3** | **Quản lý khách hàng**        | Xem thông tin → Cập nhật thông tin cá nhân → Lưu thay đổi                                                                                                    |
-|   **4** | **Quản lý tài xế**            | Tạo hồ sơ → Cập nhật thông tin → Quản lý phương tiện → Cập nhật trạng thái sẵn sàng                                                                          |
-|   **5** | **Đặt xe**                    | Nhập điểm đón → Nhập điểm đến → Chọn loại xe → Kiểm tra thông tin → Gửi yêu cầu đặt xe                                                                       |
-|   **6** | **Tìm tài xế**                | Xác định vị trí khách hàng → Lọc tài xế đang sẵn sàng → Kiểm tra loại xe → Tính khoảng cách → Ưu tiên tài xế phù hợp/gần khách hàng → Gửi yêu cầu cho tài xế |
-|   **7** | **Phân công tài xế**          | Gửi chuyến cho tài xế → Chờ phản hồi → Tài xế chấp nhận → Xác nhận chuyến; nếu từ chối/không phản hồi → Tìm tài xế khác                                      |
-|   **8** | **Thông báo nhận chuyến**     | Gửi thông báo cho tài xế → Thông báo tài xế nhận chuyến cho khách hàng → Cập nhật trạng thái chuyến                                                          |
-|   **9** | **Theo dõi chuyến đi**        | Xác định vị trí tài xế → Hiển thị vị trí → Cập nhật trạng thái → Hiển thị thời gian dự kiến đến                                                              |
-|  **10** | **Thực hiện chuyến**          | Tài xế đến điểm đón → Cập nhật “đã đến” → Đón khách → Cập nhật “đã đón” → Di chuyển → Hoàn thành chuyến                                                      |
-|  **11** | **Giám sát chuyến**           | Nhân viên xem chuyến đang diễn ra → Kiểm tra vị trí/trạng thái → Hỗ trợ khi chuyến gặp sự cố                                                                 |
-|  **12** | **Tính cước**                 | Xác định loại dịch vụ → Lấy thông tin chuyến → Tính số tiền → Hiển thị số tiền cần thanh toán                                                                |
-|  **13** | **Thanh toán**                | Chọn phương thức → Thanh toán tiền mặt hoặc điện tử → Gửi yêu cầu thanh toán → Nhận kết quả giao dịch                                                        |
-|  **14** | **Xử lý thanh toán thất bại** | Kiểm tra kết quả → Thông báo thất bại → Cho phép thực hiện lại theo chính sách                                                                               |
-|  **15** | **Thông báo**                 | Xác định sự kiện → Xác định người nhận → Gửi thông báo → Ghi nhận trạng thái gửi                                                                             |
-|  **16** | **Lịch sử chuyến đi**         | Lưu thông tin chuyến → Tìm kiếm lịch sử → Xem chi tiết chuyến → Xem số tiền đã thanh toán                                                                    |
-|  **17** | **Đánh giá tài xế**           | Kiểm tra chuyến đã hoàn thành → Nhập đánh giá/rating → Lưu đánh giá                                                                                          |
-|  **18** | **Quản lý & báo cáo**         | Tổng hợp dữ liệu → Thống kê số chuyến → Doanh thu → Tỷ lệ hoàn thành/hủy → Hiệu quả tài xế                                                                   |
+# Bước 7: Use case tổng quát
 
-``` mermaid
+Đây là code Mermaid để em copy thẳng vào file `.md`:
+
+```mermaid
 flowchart LR
     KH["Khách hàng"]
     TX["Tài xế"]
@@ -211,43 +222,109 @@ flowchart LR
     TT["Nhà cung cấp thanh toán"]
 
     subgraph CAB["CAB SYSTEM"]
-        UC1(["Đăng ký / Đăng nhập"])
-        UC2(["Quản lý thông tin"])
-        UC3(["Đặt xe"])
-        UC4(["Tìm & phân công tài xế"])
-        UC5(["Theo dõi chuyến đi"])
-        UC6(["Quản lý chuyến đi"])
-        UC7(["Tính cước"])
-        UC8(["Thanh toán"])
-        UC9(["Thông báo"])
-        UC10(["Lịch sử chuyến & Đánh giá"])
-        UC11(["Quản lý vận hành"])
-        UC12(["Báo cáo"])
+        UC1(["Đăng ký tài khoản"])
+        UC2(["Đăng nhập hệ thống"])
+        UC3(["Đăng xuất hệ thống"])
+        UC4(["Xác thực & phân quyền"])
+
+        UC5(["Quản lý thông tin khách hàng"])
+        UC6(["Đặt xe"])
+        UC7(["Theo dõi trạng thái chuyến đi"])
+        UC8(["Xem lịch sử chuyến đi & đánh giá tài xế"])
+
+        UC9(["Quản lý hồ sơ tài xế"])
+        UC10(["Quản lý phương tiện"])
+        UC11(["Cập nhật trạng thái sẵn sàng"])
+        UC12(["Nhận chuyến"])
+        UC13(["Từ chối chuyến"])
+
+        UC14(["Tiếp nhận & xử lý yêu cầu đặt xe"])
+        UC15(["Tìm kiếm & phân công tài xế"])
+        UC16(["Xử lý tài xế không phản hồi hoặc từ chối"])
+        UC17(["Cập nhật & theo dõi trạng thái, vị trí chuyến đi"])
+
+        UC18(["Theo dõi & quản lý chuyến đang diễn ra"])
+        UC19(["Hỗ trợ xử lý chuyến gặp sự cố"])
+        UC20(["Tra cứu thông tin giao dịch"])
+
+        UC21(["Tính cước chuyến đi"])
+        UC22(["Lựa chọn & thực hiện thanh toán"])
+        UC23(["Xử lý & ghi nhận kết quả thanh toán"])
+        UC24(["Xử lý thanh toán thất bại & thanh toán lại"])
+
+        UC25(["Gửi thông báo"])
+
+        UC26(["Tổng hợp, thống kê & xem báo cáo"])
     end
 
     KH --> UC1
     KH --> UC2
     KH --> UC3
     KH --> UC5
+    KH --> UC6
+    KH --> UC7
     KH --> UC8
-    KH --> UC10
+    KH --> UC22
+    KH --> UC24
 
     TX --> UC1
     TX --> UC2
-    TX --> UC4
-    TX --> UC6
+    TX --> UC3
     TX --> UC9
+    TX --> UC10
+    TX --> UC11
+    TX --> UC12
+    TX --> UC13
+    TX --> UC17
+    TX --> UC22
 
-    NV --> UC11
-    NV --> UC4
-    NV --> UC6
-    NV --> UC8
+    NV --> UC2
+    NV --> UC3
+    NV --> UC9
+    NV --> UC10
+    NV --> UC15
+    NV --> UC18
+    NV --> UC19
+    NV --> UC20
+    NV --> UC26
 
-    LD --> UC12
+    LD --> UC26
 
-    TT --> UC8
+    TT --> UC22
+    TT --> UC23
+
+    UC1 --> UC4
+    UC2 --> UC4
+    UC6 --> UC14
+    UC14 --> UC15
+    UC15 --> UC16
+    UC16 --> UC15
+    UC17 --> UC7
+    UC21 --> UC22
+    UC22 --> UC23
+    UC23 --> UC24
+    UC25 --> UC7
 ```
 
+
+## 26. Đặc tả Use Case Tổng hợp, thống kê và xem báo cáo
+
+| | |
+|---|---|
+| **Tên use case:** | **Tổng hợp, thống kê và xem báo cáo** |
+| **Actor:** | Hệ thống, Nhân viên vận hành, Ban lãnh đạo |
+| **Mô tả:** | Cho phép hệ thống tổng hợp dữ liệu và cung cấp các báo cáo về hoạt động, chuyến đi, doanh thu và hiệu quả tài xế. |
+| **Tiền điều kiện (Precondition):** | Dữ liệu hoạt động đã được ghi nhận và người dùng có quyền xem báo cáo. |
+| **Hậu điều kiện (Postcondition):** | Báo cáo được tổng hợp và hiển thị theo yêu cầu. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: NV vận hành/Ban lãnh đạo** | **Hệ thống** |
+| 1. Chọn chức năng Báo cáo. | 2. Hiển thị các loại báo cáo. |
+| 3. Chọn loại báo cáo và khoảng thời gian. | 4. Tổng hợp dữ liệu. |
+| | 5. Thống kê số lượng chuyến, doanh thu, tỷ lệ hoàn thành, tỷ lệ hủy và hiệu quả tài xế. |
+| | 6. Hiển thị báo cáo. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 4.1 Nếu không có dữ liệu trong khoảng thời gian đã chọn, hệ thống thông báo không có dữ liệu. |
+| 3.1 Nếu người dùng không có quyền xem báo cáo, hệ thống từ chối truy cập. | |
 
 # Bước 8: Đặc tả Use Case
 
