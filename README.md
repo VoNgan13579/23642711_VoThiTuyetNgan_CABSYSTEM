@@ -211,8 +211,6 @@ g. Hệ thống quản lý vận hành:
 
 # Bước 7: Use case tổng quát
 
-Đây là code Mermaid để em copy thẳng vào file `.md`:
-
 ```mermaid
 flowchart LR
     KH["Khách hàng"]
@@ -307,6 +305,466 @@ flowchart LR
 ```
 
 
+# Bước 8: Đặc tả Use Case
+
+## 1. Đặc tả Use Case Đăng ký tài khoản
+
+| | |
+|---|---|
+| **Tên use case:** | **Đăng ký tài khoản** |
+| **Actor:** | Khách hàng, Tài xế |
+| **Mô tả:** | Cho phép khách hàng hoặc tài xế tạo tài khoản mới để sử dụng hệ thống. |
+| **Tiền điều kiện (Precondition):** | Người dùng chưa có tài khoản trên hệ thống. |
+| **Hậu điều kiện (Postcondition):** | Tài khoản được tạo thành công và thông tin được lưu vào hệ thống. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Người dùng** | **Hệ thống** |
+| 1. Chọn chức năng Đăng ký tài khoản. | 2. Hiển thị giao diện đăng ký. |
+| 3. Nhập thông tin đăng ký. | 4. Kiểm tra tính hợp lệ của thông tin. |
+| 5. Nhấn Đăng ký. | 6. Kiểm tra tài khoản đã tồn tại hay chưa. |
+| | 7. Tạo tài khoản và thông báo đăng ký thành công. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 3.1 Nếu thông tin không hợp lệ, hệ thống thông báo lỗi và yêu cầu nhập lại. | |
+| 6.1 Nếu tài khoản đã tồn tại, hệ thống thông báo tài khoản đã tồn tại và yêu cầu đăng ký lại. | |
+
+## 2. Đặc tả Use Case Đăng nhập hệ thống
+
+| | |
+|---|---|
+| **Tên use case:** | **Đăng nhập hệ thống** |
+| **Actor:** | Khách hàng, Tài xế, Nhân viên vận hành |
+| **Mô tả:** | Cho phép người dùng đăng nhập vào hệ thống bằng thông tin tài khoản đã đăng ký. |
+| **Tiền điều kiện (Precondition):** | Người dùng đã có tài khoản hợp lệ. |
+| **Hậu điều kiện (Postcondition):** | Người dùng đăng nhập thành công và được chuyển đến giao diện phù hợp với vai trò. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Người dùng** | **Hệ thống** |
+| 1. Chọn chức năng Đăng nhập. | 2. Hiển thị giao diện đăng nhập. |
+| 3. Nhập tên đăng nhập và mật khẩu. | 4. Kiểm tra thông tin đăng nhập. |
+| 5. Nhấn Đăng nhập. | 6. Xác thực tài khoản và phân quyền người dùng. |
+| | 7. Cho phép truy cập hệ thống theo vai trò. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 4.1 Nếu thông tin đăng nhập không chính xác, hệ thống thông báo lỗi và yêu cầu nhập lại. | |
+| 6.1 Nếu tài khoản không có quyền truy cập, hệ thống thông báo không thể truy cập chức năng. | |
+
+## 3. Đặc tả Use Case Đăng xuất hệ thống
+
+| | |
+|---|---|
+| **Tên use case:** | **Đăng xuất hệ thống** |
+| **Actor:** | Khách hàng, Tài xế, Nhân viên vận hành |
+| **Mô tả:** | Cho phép người dùng kết thúc phiên làm việc trên hệ thống. |
+| **Tiền điều kiện (Precondition):** | Người dùng đã đăng nhập hệ thống. |
+| **Hậu điều kiện (Postcondition):** | Phiên đăng nhập được kết thúc và người dùng được đưa về màn hình đăng nhập. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Người dùng** | **Hệ thống** |
+| 1. Chọn chức năng Đăng xuất. | 2. Hiển thị yêu cầu xác nhận đăng xuất. |
+| 3. Xác nhận đăng xuất. | 4. Kết thúc phiên đăng nhập. |
+| | 5. Chuyển về giao diện đăng nhập. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 3.1 Người dùng chọn Hủy, hệ thống giữ nguyên phiên đăng nhập và quay lại giao diện hiện tại. | |
+
+## 4. Đặc tả Use Case Xác thực và phân quyền người dùng theo vai trò
+
+| | |
+|---|---|
+| **Tên use case:** | **Xác thực và phân quyền người dùng theo vai trò** |
+| **Actor:** | Hệ thống |
+| **Mô tả:** | Hệ thống xác thực tài khoản và xác định quyền truy cập dựa trên vai trò của người dùng. |
+| **Tiền điều kiện (Precondition):** | Người dùng đã cung cấp thông tin tài khoản hợp lệ. |
+| **Hậu điều kiện (Postcondition):** | Người dùng được xác định đúng vai trò và quyền truy cập. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Hệ thống** | **Hệ thống** |
+| 1. Tiếp nhận thông tin tài khoản. | 2. Kiểm tra thông tin tài khoản. |
+| | 3. Xác định vai trò người dùng. |
+| | 4. Cấp quyền truy cập tương ứng. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 2.1 Nếu thông tin tài khoản không hợp lệ, hệ thống từ chối xác thực. | |
+| 4.1 Nếu người dùng không có quyền truy cập chức năng, hệ thống từ chối truy cập. | |
+
+## 5. Đặc tả Use Case Quản lý thông tin khách hàng
+
+| | |
+|---|---|
+| **Tên use case:** | **Quản lý thông tin khách hàng** |
+| **Actor:** | Khách hàng |
+| **Mô tả:** | Cho phép khách hàng xem và cập nhật thông tin cá nhân. |
+| **Tiền điều kiện (Precondition):** | Khách hàng đã đăng nhập. |
+| **Hậu điều kiện (Postcondition):** | Thông tin cá nhân được cập nhật thành công nếu có thay đổi. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Khách hàng** | **Hệ thống** |
+| 1. Chọn chức năng Thông tin cá nhân. | 2. Hiển thị thông tin khách hàng. |
+| 3. Chọn cập nhật thông tin. | 4. Hiển thị biểu mẫu cập nhật. |
+| 5. Nhập thông tin mới và nhấn Lưu. | 6. Kiểm tra thông tin cập nhật. |
+| | 7. Lưu thông tin và thông báo cập nhật thành công. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 6.1 Nếu thông tin không hợp lệ, hệ thống thông báo lỗi và yêu cầu nhập lại. | |
+| 5.1 Khách hàng không lưu thay đổi, hệ thống giữ nguyên thông tin hiện tại. | |
+
+## 6. Đặc tả Use Case Đặt xe
+
+| | |
+|---|---|
+| **Tên use case:** | **Đặt xe** |
+| **Actor:** | Khách hàng |
+| **Mô tả:** | Cho phép khách hàng tạo yêu cầu chuyến đi bằng cách nhập thông tin chuyến xe và lựa chọn loại xe. |
+| **Tiền điều kiện (Precondition):** | Khách hàng đã đăng nhập và không có chuyến đang thực hiện. |
+| **Hậu điều kiện (Postcondition):** | Yêu cầu đặt xe được tạo thành công. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Khách hàng** | **Hệ thống** |
+| 1. Chọn chức năng Đặt xe. | 2. Hiển thị giao diện đặt xe. |
+| 3. Nhập điểm đón, điểm đến và chọn loại xe. | 4. Kiểm tra thông tin chuyến đi. |
+| | 5. Hiển thị thông tin cước dự kiến. |
+| 6. Chọn phương thức thanh toán. | 7. Ghi nhận thông tin đặt xe. |
+| 8. Nhấn Tìm chuyến. | 9. Tạo yêu cầu chuyến và chuyển sang tìm tài xế. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 4.1 Nếu địa điểm không hợp lệ, hệ thống thông báo lỗi và yêu cầu nhập lại. | |
+| 6.1 Nếu khách hàng chọn phương thức thanh toán khác, hệ thống ghi nhận phương thức đã chọn. | |
+| 9.1 Nếu không thể tạo yêu cầu, hệ thống thông báo lỗi và yêu cầu thử lại. | |
+
+## 7. Đặc tả Use Case Theo dõi trạng thái chuyến đi
+
+| | |
+|---|---|
+| **Tên use case:** | **Theo dõi trạng thái chuyến đi** |
+| **Actor:** | Khách hàng |
+| **Mô tả:** | Cho phép khách hàng theo dõi trạng thái và vị trí của chuyến đi. |
+| **Tiền điều kiện (Precondition):** | Khách hàng đã đăng nhập và có chuyến đang thực hiện. |
+| **Hậu điều kiện (Postcondition):** | Khách hàng xem được trạng thái và thông tin vị trí chuyến đi. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Khách hàng** | **Hệ thống** |
+| 1. Chọn chuyến đang thực hiện. | 2. Hiển thị thông tin chuyến. |
+| 3. Xem trạng thái chuyến đi. | 4. Cập nhật trạng thái và vị trí chuyến đi. |
+| | 5. Hiển thị thông tin mới nhất cho khách hàng. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 4.1 Nếu không nhận được dữ liệu vị trí, hệ thống thông báo tạm thời không thể cập nhật vị trí. | |
+
+## 8. Đặc tả Use Case Xem lịch sử chuyến đi và đánh giá tài xế
+
+| | |
+|---|---|
+| **Tên use case:** | **Xem lịch sử chuyến đi và đánh giá tài xế** |
+| **Actor:** | Khách hàng |
+| **Mô tả:** | Cho phép khách hàng xem các chuyến đã thực hiện và đánh giá tài xế sau chuyến đi. |
+| **Tiền điều kiện (Precondition):** | Khách hàng đã đăng nhập và có lịch sử chuyến đi. |
+| **Hậu điều kiện (Postcondition):** | Đánh giá của khách hàng được ghi nhận nếu khách hàng thực hiện đánh giá. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Khách hàng** | **Hệ thống** |
+| 1. Chọn Lịch sử chuyến đi. | 2. Hiển thị danh sách chuyến đã thực hiện. |
+| 3. Chọn một chuyến đi. | 4. Hiển thị chi tiết chuyến đi. |
+| 5. Chọn chức năng Đánh giá tài xế. | 6. Hiển thị biểu mẫu đánh giá. |
+| 7. Chọn mức đánh giá và nhập nhận xét. | 8. Kiểm tra và lưu đánh giá. |
+| | 9. Thông báo đánh giá thành công. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 7.1 Nếu nội dung đánh giá không hợp lệ, hệ thống thông báo lỗi và yêu cầu nhập lại. | |
+| 5.1 Nếu khách hàng đã đánh giá chuyến đi, hệ thống hiển thị đánh giá đã có. | |
+
+## 9. Đặc tả Use Case Quản lý hồ sơ tài xế
+
+| | |
+|---|---|
+| **Tên use case:** | **Quản lý hồ sơ tài xế** |
+| **Actor:** | Tài xế, Nhân viên vận hành |
+| **Mô tả:** | Cho phép xem và cập nhật thông tin hồ sơ tài xế. |
+| **Tiền điều kiện (Precondition):** | Tài khoản đã đăng nhập và có quyền quản lý hồ sơ. |
+| **Hậu điều kiện (Postcondition):** | Thông tin hồ sơ tài xế được cập nhật thành công. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Tài xế/NV vận hành** | **Hệ thống** |
+| 1. Chọn hồ sơ tài xế. | 2. Hiển thị thông tin hồ sơ. |
+| 3. Chọn cập nhật thông tin. | 4. Hiển thị biểu mẫu cập nhật. |
+| 5. Nhập thông tin và nhấn Lưu. | 6. Kiểm tra thông tin. |
+| | 7. Lưu thông tin và thông báo thành công. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 6.1 Nếu thông tin không hợp lệ, hệ thống thông báo lỗi và yêu cầu nhập lại. | |
+
+## 10. Đặc tả Use Case Quản lý phương tiện
+
+| | |
+|---|---|
+| **Tên use case:** | **Quản lý phương tiện** |
+| **Actor:** | Tài xế, Nhân viên vận hành |
+| **Mô tả:** | Cho phép quản lý thông tin phương tiện được sử dụng cho chuyến xe. |
+| **Tiền điều kiện (Precondition):** | Người dùng đã đăng nhập và có quyền quản lý phương tiện. |
+| **Hậu điều kiện (Postcondition):** | Thông tin phương tiện được thêm hoặc cập nhật thành công. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Tài xế/NV vận hành** | **Hệ thống** |
+| 1. Chọn Quản lý phương tiện. | 2. Hiển thị thông tin phương tiện. |
+| 3. Nhập hoặc cập nhật thông tin phương tiện. | 4. Kiểm tra thông tin. |
+| 5. Nhấn Lưu. | 6. Lưu thông tin và thông báo thành công. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 4.1 Nếu thông tin phương tiện không hợp lệ, hệ thống thông báo lỗi và yêu cầu nhập lại. | |
+
+## 11. Đặc tả Use Case Cập nhật trạng thái sẵn sàng
+
+| | |
+|---|---|
+| **Tên use case:** | **Cập nhật trạng thái sẵn sàng** |
+| **Actor:** | Tài xế |
+| **Mô tả:** | Cho phép tài xế cập nhật trạng thái sẵn sàng hoặc không sẵn sàng nhận chuyến. |
+| **Tiền điều kiện (Precondition):** | Tài xế đã đăng nhập. |
+| **Hậu điều kiện (Postcondition):** | Trạng thái sẵn sàng của tài xế được cập nhật. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Tài xế** | **Hệ thống** |
+| 1. Chọn trạng thái hoạt động. | 2. Hiển thị trạng thái hiện tại. |
+| 3. Chọn Sẵn sàng hoặc Không sẵn sàng. | 4. Cập nhật trạng thái tài xế. |
+| | 5. Thông báo cập nhật thành công. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 4.1 Nếu tài xế đang thực hiện chuyến, hệ thống không cho chuyển sang trạng thái sẵn sàng mới và thông báo lý do. | |
+
+## 12. Đặc tả Use Case Nhận chuyến
+
+| | |
+|---|---|
+| **Tên use case:** | **Nhận chuyến** |
+| **Actor:** | Tài xế |
+| **Mô tả:** | Cho phép tài xế nhận yêu cầu chuyến được hệ thống phân công. |
+| **Tiền điều kiện (Precondition):** | Tài xế đang sẵn sàng và có yêu cầu chuyến được gửi đến. |
+| **Hậu điều kiện (Postcondition):** | Chuyến được xác nhận cho tài xế. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Tài xế** | **Hệ thống** |
+| 1. Nhận thông báo yêu cầu chuyến. | 2. Hiển thị thông tin chuyến. |
+| 3. Chọn Nhận chuyến. | 4. Kiểm tra trạng thái yêu cầu. |
+| | 5. Ghi nhận tài xế nhận chuyến. |
+| | 6. Cập nhật trạng thái chuyến và thông báo cho khách hàng. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 4.1 Nếu chuyến đã được tài xế khác nhận, hệ thống thông báo chuyến không còn khả dụng. | |
+
+## 13. Đặc tả Use Case Từ chối chuyến
+
+| | |
+|---|---|
+| **Tên use case:** | **Từ chối chuyến** |
+| **Actor:** | Tài xế |
+| **Mô tả:** | Cho phép tài xế từ chối yêu cầu chuyến được gửi đến. |
+| **Tiền điều kiện (Precondition):** | Tài xế đang sẵn sàng và nhận được yêu cầu chuyến. |
+| **Hậu điều kiện (Postcondition):** | Yêu cầu được ghi nhận là bị tài xế từ chối và hệ thống tiếp tục xử lý yêu cầu. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Tài xế** | **Hệ thống** |
+| 1. Xem thông tin chuyến. | 2. Hiển thị thông tin chuyến. |
+| 3. Chọn Từ chối chuyến. | 4. Xác nhận việc từ chối. |
+| 5. Xác nhận Từ chối. | 6. Ghi nhận tài xế từ chối chuyến. |
+| | 7. Chuyển yêu cầu sang bước tìm tài xế khác. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 5.1 Tài xế chọn Hủy, hệ thống giữ nguyên yêu cầu chuyến. | |
+
+## 14. Đặc tả Use Case Tiếp nhận và xử lý yêu cầu đặt xe
+
+| | |
+|---|---|
+| **Tên use case:** | **Tiếp nhận và xử lý yêu cầu đặt xe** |
+| **Actor:** | Hệ thống |
+| **Mô tả:** | Hệ thống tiếp nhận yêu cầu đặt xe từ khách hàng và kiểm tra thông tin trước khi tìm tài xế. |
+| **Tiền điều kiện (Precondition):** | Khách hàng đã tạo yêu cầu đặt xe. |
+| **Hậu điều kiện (Postcondition):** | Yêu cầu hợp lệ được chuyển sang quá trình tìm và phân công tài xế. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Hệ thống** | **Hệ thống** |
+| 1. Tiếp nhận yêu cầu đặt xe. | 2. Kiểm tra thông tin yêu cầu. |
+| | 3. Kiểm tra trạng thái khách hàng và chuyến hiện tại. |
+| | 4. Tạo yêu cầu chuyến. |
+| | 5. Chuyển yêu cầu sang chức năng tìm kiếm tài xế. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 2.1 Nếu yêu cầu không hợp lệ, hệ thống từ chối yêu cầu và thông báo cho khách hàng. | |
+| 3.1 Nếu khách hàng đang có chuyến chưa hoàn thành, hệ thống không tạo yêu cầu mới. | |
+
+## 15. Đặc tả Use Case Tìm kiếm và phân công tài xế
+
+| | |
+|---|---|
+| **Tên use case:** | **Tìm kiếm và phân công tài xế** |
+| **Actor:** | Hệ thống |
+| **Mô tả:** | Hệ thống tìm tài xế phù hợp dựa trên trạng thái, vị trí và yêu cầu chuyến đi. |
+| **Tiền điều kiện (Precondition):** | Yêu cầu đặt xe hợp lệ đã được tạo. |
+| **Hậu điều kiện (Postcondition):** | Một tài xế phù hợp được phân công cho chuyến đi. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Hệ thống** | **Hệ thống** |
+| 1. Nhận yêu cầu tìm tài xế. | 2. Lọc danh sách tài xế đang sẵn sàng. |
+| | 3. Xác định tài xế phù hợp theo vị trí và loại xe. |
+| | 4. Ưu tiên tài xế phù hợp và gần khách hàng. |
+| | 5. Gửi yêu cầu chuyến đến tài xế. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 2.1 Nếu không có tài xế sẵn sàng, hệ thống tiếp tục tìm kiếm trong thời gian quy định. | |
+| 4.1 Nếu tài xế phù hợp không thể nhận chuyến, hệ thống chuyển sang tài xế phù hợp tiếp theo. | |
+
+## 16. Đặc tả Use Case Xử lý tài xế không phản hồi hoặc từ chối
+
+| | |
+|---|---|
+| **Tên use case:** | **Xử lý tài xế không phản hồi hoặc từ chối** |
+| **Actor:** | Hệ thống |
+| **Mô tả:** | Hệ thống xử lý yêu cầu khi tài xế không phản hồi hoặc từ chối chuyến. |
+| **Tiền điều kiện (Precondition):** | Yêu cầu chuyến đã được gửi đến tài xế. |
+| **Hậu điều kiện (Postcondition):** | Yêu cầu được chuyển cho tài xế khác hoặc kết thúc nếu không còn tài xế phù hợp. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Hệ thống** | **Hệ thống** |
+| 1. Theo dõi thời gian phản hồi của tài xế. | 2. Kiểm tra phản hồi của tài xế. |
+| | 3. Xác định tài xế không phản hồi hoặc từ chối. |
+| | 4. Chuyển yêu cầu sang tài xế phù hợp tiếp theo. |
+| | 5. Gửi thông báo yêu cầu chuyến mới cho tài xế. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 3.1 Nếu tài xế nhận chuyến, hệ thống kết thúc xử lý và cập nhật chuyến. | |
+| 4.1 Nếu không còn tài xế phù hợp, hệ thống thông báo cho khách hàng không tìm thấy tài xế. | |
+
+## 17. Đặc tả Use Case Cập nhật và theo dõi trạng thái, vị trí chuyến đi
+
+| | |
+|---|---|
+| **Tên use case:** | **Cập nhật và theo dõi trạng thái, vị trí chuyến đi** |
+| **Actor:** | Tài xế, Hệ thống |
+| **Mô tả:** | Cho phép tài xế cập nhật trạng thái và vị trí trong quá trình thực hiện chuyến; hệ thống ghi nhận và cung cấp thông tin mới nhất. |
+| **Tiền điều kiện (Precondition):** | Chuyến đã được phân công cho tài xế. |
+| **Hậu điều kiện (Postcondition):** | Trạng thái và vị trí chuyến được cập nhật trên hệ thống. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Tài xế** | **Hệ thống** |
+| 1. Bắt đầu hoặc cập nhật trạng thái chuyến. | 2. Ghi nhận trạng thái chuyến. |
+| 3. Cập nhật vị trí trong quá trình di chuyển. | 4. Ghi nhận vị trí tài xế. |
+| | 5. Cập nhật thông tin chuyến trên hệ thống. |
+| | 6. Cung cấp trạng thái và vị trí mới nhất cho người dùng có quyền theo dõi. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 3.1 Nếu không nhận được dữ liệu vị trí, hệ thống thông báo tạm thời không thể cập nhật vị trí. | |
+| 1.1 Nếu chuyến đã kết thúc, hệ thống không cho phép cập nhật trạng thái tiếp tục. | |
+
+## 18. Đặc tả Use Case Theo dõi và quản lý các chuyến đang diễn ra
+
+| | |
+|---|---|
+| **Tên use case:** | **Theo dõi và quản lý các chuyến đang diễn ra** |
+| **Actor:** | Nhân viên vận hành |
+| **Mô tả:** | Cho phép nhân viên vận hành theo dõi tình trạng các chuyến đang thực hiện. |
+| **Tiền điều kiện (Precondition):** | Nhân viên vận hành đã đăng nhập và có quyền vận hành. |
+| **Hậu điều kiện (Postcondition):** | Thông tin các chuyến đang diễn ra được hiển thị và theo dõi. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: NV vận hành** | **Hệ thống** |
+| 1. Chọn danh sách chuyến đang diễn ra. | 2. Hiển thị danh sách chuyến. |
+| 3. Chọn một chuyến. | 4. Hiển thị trạng thái, vị trí và thông tin chuyến. |
+| 5. Theo dõi chuyến. | 6. Cập nhật dữ liệu chuyến theo thời gian. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 2.1 Nếu không có chuyến đang diễn ra, hệ thống thông báo không có dữ liệu. | |
+
+## 19. Đặc tả Use Case Hỗ trợ xử lý chuyến đi gặp sự cố
+
+| | |
+|---|---|
+| **Tên use case:** | **Hỗ trợ xử lý chuyến đi gặp sự cố** |
+| **Actor:** | Nhân viên vận hành |
+| **Mô tả:** | Cho phép nhân viên vận hành tiếp nhận và hỗ trợ xử lý các sự cố phát sinh trong chuyến đi. |
+| **Tiền điều kiện (Precondition):** | Nhân viên vận hành đã đăng nhập và có chuyến cần hỗ trợ. |
+| **Hậu điều kiện (Postcondition):** | Sự cố được ghi nhận và có phương án xử lý phù hợp. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: NV vận hành** | **Hệ thống** |
+| 1. Tiếp nhận thông tin sự cố. | 2. Hiển thị thông tin chuyến và sự cố. |
+| 3. Kiểm tra thông tin sự cố. | 4. Ghi nhận nội dung xử lý. |
+| 5. Thực hiện phương án hỗ trợ. | 6. Cập nhật kết quả xử lý. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 3.1 Nếu thông tin chưa đầy đủ, nhân viên yêu cầu bổ sung thông tin. | |
+| 5.1 Nếu không thể xử lý trực tiếp, hệ thống ghi nhận sự cố để chuyển cấp xử lý phù hợp. | |
+
+## 20. Đặc tả Use Case Tra cứu thông tin giao dịch
+
+| | |
+|---|---|
+| **Tên use case:** | **Tra cứu thông tin giao dịch** |
+| **Actor:** | Nhân viên vận hành |
+| **Mô tả:** | Cho phép nhân viên vận hành tra cứu thông tin giao dịch liên quan đến các chuyến đi. |
+| **Tiền điều kiện (Precondition):** | Nhân viên vận hành đã đăng nhập. |
+| **Hậu điều kiện (Postcondition):** | Thông tin giao dịch phù hợp với điều kiện tra cứu được hiển thị. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: NV vận hành** | **Hệ thống** |
+| 1. Chọn chức năng Tra cứu giao dịch. | 2. Hiển thị giao diện tra cứu. |
+| 3. Nhập điều kiện tra cứu. | 4. Tìm kiếm dữ liệu giao dịch. |
+| | 5. Hiển thị kết quả tra cứu. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 4.1 Nếu không tìm thấy giao dịch phù hợp, hệ thống thông báo không có dữ liệu. | |
+
+## 21. Đặc tả Use Case Tính cước chuyến đi
+
+| | |
+|---|---|
+| **Tên use case:** | **Tính cước chuyến đi** |
+| **Actor:** | Hệ thống |
+| **Mô tả:** | Hệ thống tính số tiền khách hàng cần thanh toán dựa trên thông tin chuyến đi và quy định cước. |
+| **Tiền điều kiện (Precondition):** | Chuyến đi có đầy đủ thông tin cần thiết để tính cước. |
+| **Hậu điều kiện (Postcondition):** | Số tiền cước được tính và ghi nhận cho chuyến đi. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Hệ thống** | **Hệ thống** |
+| 1. Tiếp nhận thông tin chuyến đi. | 2. Xác định loại xe và thông tin tính cước. |
+| | 3. Tính cước chuyến đi. |
+| | 4. Ghi nhận số tiền phải thanh toán. |
+| | 5. Hiển thị cước cho người dùng. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 2.1 Nếu thiếu thông tin tính cước, hệ thống thông báo không thể tính cước. | |
+
+## 22. Đặc tả Use Case Lựa chọn và thực hiện thanh toán
+
+| | |
+|---|---|
+| **Tên use case:** | **Lựa chọn và thực hiện thanh toán** |
+| **Actor:** | Khách hàng, Tài xế, Nhà cung cấp thanh toán |
+| **Mô tả:** | Cho phép người dùng lựa chọn phương thức và thực hiện thanh toán cho chuyến đi. |
+| **Tiền điều kiện (Precondition):** | Chuyến đi đã có số tiền cước cần thanh toán. |
+| **Hậu điều kiện (Postcondition):** | Yêu cầu thanh toán được gửi và kết quả được ghi nhận. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Người dùng** | **Hệ thống** |
+| 1. Chọn phương thức thanh toán. | 2. Hiển thị thông tin thanh toán. |
+| 3. Xác nhận thanh toán. | 4. Gửi yêu cầu thanh toán. |
+| | 5. Tiếp nhận kết quả từ phương thức thanh toán. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 1.1 Nếu người dùng chọn tiền mặt, hệ thống ghi nhận phương thức thanh toán tiền mặt. | |
+| 1.2 Nếu chọn thanh toán điện tử, hệ thống chuyển yêu cầu đến nhà cung cấp thanh toán. | |
+
+## 23. Đặc tả Use Case Xử lý và ghi nhận kết quả thanh toán
+
+| | |
+|---|---|
+| **Tên use case:** | **Xử lý và ghi nhận kết quả thanh toán** |
+| **Actor:** | Hệ thống, Nhà cung cấp thanh toán |
+| **Mô tả:** | Hệ thống tiếp nhận kết quả từ giao dịch thanh toán và cập nhật trạng thái thanh toán. |
+| **Tiền điều kiện (Precondition):** | Có yêu cầu thanh toán được gửi đến hệ thống. |
+| **Hậu điều kiện (Postcondition):** | Kết quả và trạng thái thanh toán được ghi nhận. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Nhà cung cấp thanh toán** | **Hệ thống** |
+| 1. Gửi kết quả giao dịch. | 2. Tiếp nhận kết quả thanh toán. |
+| | 3. Kiểm tra thông tin giao dịch. |
+| | 4. Cập nhật trạng thái thanh toán. |
+| | 5. Lưu thông tin giao dịch. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 3.1 Nếu thông tin giao dịch không hợp lệ, hệ thống không ghi nhận giao dịch và thông báo lỗi. | |
+
+## 24. Đặc tả Use Case Xử lý thanh toán thất bại và thanh toán lại
+
+| | |
+|---|---|
+| **Tên use case:** | **Xử lý thanh toán thất bại và thanh toán lại** |
+| **Actor:** | Hệ thống, Khách hàng |
+| **Mô tả:** | Cho phép hệ thống xử lý giao dịch thanh toán thất bại và khách hàng thực hiện thanh toán lại. |
+| **Tiền điều kiện (Precondition):** | Giao dịch thanh toán trước đó không thành công. |
+| **Hậu điều kiện (Postcondition):** | Giao dịch được thanh toán lại thành công hoặc được ghi nhận thất bại. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Khách hàng** | **Hệ thống** |
+| 1. Nhận thông báo thanh toán thất bại. | 2. Hiển thị nguyên nhân hoặc trạng thái thất bại. |
+| 3. Chọn Thanh toán lại. | 4. Hiển thị các phương thức thanh toán. |
+| 5. Chọn phương thức thanh toán. | 6. Gửi yêu cầu thanh toán lại. |
+| | 7. Ghi nhận kết quả giao dịch. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 3.1 Khách hàng không thanh toán lại, hệ thống giữ trạng thái chưa thanh toán. | |
+| 7.1 Nếu thanh toán lại thất bại, hệ thống thông báo và giữ trạng thái thanh toán thất bại. | |
+
+## 25. Đặc tả Use Case Gửi thông báo
+
+| | |
+|---|---|
+| **Tên use case:** | **Gửi thông báo** |
+| **Actor:** | Hệ thống, Nhà cung cấp thông báo |
+| **Mô tả:** | Hệ thống gửi thông báo về trạng thái chuyến đi và kết quả thanh toán đến người dùng. |
+| **Tiền điều kiện (Precondition):** | Có sự kiện cần gửi thông báo. |
+| **Hậu điều kiện (Postcondition):** | Thông báo được gửi đến người nhận qua kênh phù hợp. |
+| **Luồng sự kiện chính (Basic flow)** | |
+| **Actor: Hệ thống** | **Hệ thống/Nhà cung cấp thông báo** |
+| 1. Phát sinh sự kiện cần thông báo. | 2. Xác định người nhận và nội dung thông báo. |
+| | 3. Xác định kênh gửi thông báo. |
+| | 4. Gửi thông báo qua App Push, SMS hoặc Email. |
+| | 5. Ghi nhận kết quả gửi. |
+| **Luồng sự kiện thay thế (Alternate flow)** | |
+| 4.1 Nếu kênh gửi không khả dụng, hệ thống thử kênh thông báo phù hợp khác. |
+| 5.1 Nếu gửi thất bại, hệ thống ghi nhận trạng thái gửi thất bại. | |
+
 ## 26. Đặc tả Use Case Tổng hợp, thống kê và xem báo cáo
 
 | | |
@@ -326,240 +784,6 @@ flowchart LR
 | 4.1 Nếu không có dữ liệu trong khoảng thời gian đã chọn, hệ thống thông báo không có dữ liệu. |
 | 3.1 Nếu người dùng không có quyền xem báo cáo, hệ thống từ chối truy cập. | |
 
-# Bước 8: Đặc tả Use Case
-
-### UC01 – Đăng ký tài khoản
-
-| Thành phần         | Nội dung                                                                                                                                                                                                                |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tên Use Case**   | Đăng ký tài khoản                                                                                                                                                                                                       |
-| **Mục tiêu**       | Cho phép khách hàng và tài xế tạo tài khoản để sử dụng hệ thống                                                                                                                                                         |
-| **Tác nhân**       | Khách hàng, Tài xế                                                                                                                                                                                                      |
-| **Tiền điều kiện** | Người dùng chưa có tài khoản trên hệ thống                                                                                                                                                                              |
-| **Hậu điều kiện**  | Tài khoản được tạo thành công và có thể sử dụng để đăng nhập                                                                                                                                                            |
-| **Luồng chính**    | 1. Người dùng chọn chức năng đăng ký → 2. Nhập thông tin cá nhân → 3. Hệ thống kiểm tra tính đầy đủ và hợp lệ → 4. Kiểm tra tài khoản đã tồn tại hay chưa → 5. Hệ thống tạo tài khoản → 6. Thông báo đăng ký thành công |
-| **Ngoại lệ**       | Thông tin không đầy đủ hoặc không hợp lệ → hệ thống yêu cầu nhập lại; tài khoản đã tồn tại → hệ thống thông báo và yêu cầu sử dụng thông tin khác                                                                       |
-
-
-### UC02 – Đăng nhập và xác thực
-
-| Thành phần         | Nội dung                                                                                                                                                                                     |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tên Use Case**   | Đăng nhập và xác thực                                                                                                                                                                        |
-| **Mục tiêu**       | Xác thực người dùng và cho phép truy cập các chức năng phù hợp với vai trò                                                                                                                   |
-| **Tác nhân**       | Khách hàng, Tài xế, Nhân viên vận hành, Ban lãnh đạo                                                                                                                                         |
-| **Tiền điều kiện** | Người dùng đã có tài khoản                                                                                                                                                                   |
-| **Hậu điều kiện**  | Người dùng đăng nhập thành công và được cấp quyền theo vai trò                                                                                                                               |
-| **Luồng chính**    | 1. Người dùng nhập tài khoản và mật khẩu → 2. Hệ thống kiểm tra thông tin → 3. Xác thực tài khoản → 4. Xác định vai trò người dùng → 5. Cấp quyền truy cập → 6. Hiển thị giao diện tương ứng |
-| **Ngoại lệ**       | Sai tài khoản hoặc mật khẩu → thông báo đăng nhập thất bại; tài khoản bị khóa → từ chối đăng nhập; người dùng không có quyền → từ chối truy cập chức năng                                    |
-
-
-### UC03 – Quản lý thông tin khách hàng
-
-| Thành phần         | Nội dung                                                                                                                                                                                                                                      |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tên Use Case**   | Quản lý thông tin khách hàng                                                                                                                                                                                                                  |
-| **Mục tiêu**       | Cho phép khách hàng xem và cập nhật thông tin cá nhân                                                                                                                                                                                         |
-| **Tác nhân**       | Khách hàng                                                                                                                                                                                                                                    |
-| **Tiền điều kiện** | Khách hàng đã đăng nhập                                                                                                                                                                                                                       |
-| **Hậu điều kiện**  | Thông tin cá nhân được cập nhật thành công                                                                                                                                                                                                    |
-| **Luồng chính**    | 1. Khách hàng chọn quản lý thông tin → 2. Hệ thống hiển thị thông tin hiện tại → 3. Khách hàng chỉnh sửa thông tin → 4. Hệ thống kiểm tra dữ liệu → 5. Khách hàng xác nhận → 6. Hệ thống lưu thông tin mới → 7. Thông báo cập nhật thành công |
-| **Ngoại lệ**       | Thông tin không hợp lệ → yêu cầu nhập lại; xảy ra lỗi khi lưu → thông báo cập nhật thất bại                                                                                                                                                   |
-
-
-### UC04 – Quản lý tài xế
-
-| Thành phần         | Nội dung                                                                                                                                                                                                                                             |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tên Use Case**   | Quản lý tài xế                                                                                                                                                                                                                                       |
-| **Mục tiêu**       | Quản lý hồ sơ, phương tiện và trạng thái hoạt động của tài xế                                                                                                                                                                                        |
-| **Tác nhân**       | Tài xế, Nhân viên vận hành                                                                                                                                                                                                                           |
-| **Tiền điều kiện** | Tài xế hoặc nhân viên vận hành đã đăng nhập và có quyền                                                                                                                                                                                              |
-| **Hậu điều kiện**  | Thông tin tài xế, phương tiện hoặc trạng thái hoạt động được cập nhật                                                                                                                                                                                |
-| **Luồng chính**    | 1. Tài xế/Nhân viên chọn quản lý hồ sơ → 2. Hệ thống hiển thị thông tin → 3. Thêm hoặc cập nhật thông tin tài xế → 4. Cập nhật thông tin phương tiện → 5. Tài xế cập nhật trạng thái sẵn sàng/không sẵn sàng → 6. Hệ thống kiểm tra và lưu thông tin |
-| **Ngoại lệ**       | Thông tin không hợp lệ → yêu cầu nhập lại; tài xế không đủ điều kiện hoạt động → không cho chuyển sang trạng thái sẵn sàng; người dùng không có quyền → từ chối thao tác                                                                             |
-
-
-### UC05 – Đặt xe
-
-| Thành phần         | Nội dung                                                                                                                                                                                                                |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tên Use Case**   | Đặt xe                                                                                                                                                                                                                  |
-| **Mục tiêu**       | Cho phép khách hàng tạo yêu cầu đặt xe với điểm đón, điểm đến và loại xe mong muốn                                                                                                                                      |
-| **Tác nhân**       | Khách hàng                                                                                                                                                                                                              |
-| **Tiền điều kiện** | Khách hàng đã đăng nhập và tài khoản đang hoạt động                                                                                                                                                                     |
-| **Hậu điều kiện**  | Yêu cầu đặt xe được tạo thành công và chuyển sang quá trình tìm tài xế                                                                                                                                                  |
-| **Luồng chính**    | 1. Khách hàng chọn chức năng đặt xe → 2. Nhập điểm đón → 3. Nhập điểm đến → 4. Chọn loại xe → 5. Hệ thống kiểm tra thông tin → 6. Khách hàng xác nhận đặt xe → 7. Hệ thống tạo yêu cầu → 8. Hệ thống bắt đầu tìm tài xế |
-| **Ngoại lệ**       | Không nhập đủ điểm đón/điểm đến → yêu cầu bổ sung; loại xe không khả dụng → thông báo và yêu cầu chọn loại xe khác; hệ thống không thể tiếp nhận yêu cầu → thông báo lỗi                                                |
-
-
-### UC06 – Tìm và phân công tài xế
-
-| Thành phần         | Nội dung                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Tên Use Case**   | Tìm và phân công tài xế                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| **Mục tiêu**       | Tự động tìm và phân công tài xế phù hợp cho yêu cầu đặt xe                                                                                                                                                                                                                                                                                                                                                                                 |
-| **Tác nhân**       | Hệ thống, Tài xế                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| **Tiền điều kiện** | Khách hàng đã tạo yêu cầu đặt xe hợp lệ                                                                                                                                                                                                                                                                                                                                                                                                    |
-| **Hậu điều kiện**  | Một tài xế phù hợp được phân công cho chuyến hoặc khách hàng được thông báo không tìm được tài xế                                                                                                                                                                                                                                                                                                                                          |
-| **Luồng chính**    | 1. Hệ thống xác định vị trí khách hàng → 2. Xác định loại xe khách hàng yêu cầu → 3. Quét các tài xế đang ở trạng thái sẵn sàng → 4. Lọc tài xế phù hợp với loại xe → 5. Tính khoảng cách giữa tài xế và khách hàng → 6. Xem xét các tiêu chí phù hợp của tài xế → 7. Ưu tiên tài xế phù hợp và gần khách hàng → 8. Gửi yêu cầu chuyến cho tài xế → 9. Chờ tài xế phản hồi → 10. Nếu tài xế chấp nhận, hệ thống xác nhận tài xế cho chuyến |
-| **Ngoại lệ**       | Tài xế từ chối → hệ thống tiếp tục tìm tài xế khác; tài xế không phản hồi trong thời gian quy định → chuyển sang tài xế khác; không còn tài xế phù hợp → hệ thống thông báo cho khách hàng rằng chưa tìm được tài xế                                                                                                                                                                                                                       |
-
-
-### UC07 – Nhận/Từ chối chuyến
-
-| Thành phần         | Nội dung                                                                                                                                                                                                          |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tên Use Case**   | Nhận/Từ chối chuyến                                                                                                                                                                                               |
-| **Mục tiêu**       | Cho phép tài xế phản hồi yêu cầu chuyến được hệ thống gửi đến                                                                                                                                                     |
-| **Tác nhân**       | Tài xế                                                                                                                                                                                                            |
-| **Tiền điều kiện** | Tài xế đang ở trạng thái sẵn sàng và nhận được yêu cầu chuyến                                                                                                                                                     |
-| **Hậu điều kiện**  | Chuyến được tài xế nhận hoặc hệ thống chuyển yêu cầu sang tài xế khác                                                                                                                                             |
-| **Luồng chính**    | 1. Tài xế nhận thông báo có chuyến mới → 2. Xem thông tin điểm đón, điểm đến và loại xe → 3. Tài xế lựa chọn nhận hoặc từ chối → 4. Nếu nhận, hệ thống xác nhận tài xế → 5. Nếu từ chối, hệ thống tìm tài xế khác |
-| **Ngoại lệ**       | Tài xế không phản hồi trong thời gian quy định → hệ thống tự động chuyển yêu cầu sang tài xế khác; chuyến đã được tài xế khác nhận → yêu cầu không còn khả dụng                                                   |
-
-
-### UC08 – Theo dõi chuyến đi
-
-| Thành phần         | Nội dung                                                                                                                                                                                                                   |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tên Use Case**   | Theo dõi chuyến đi                                                                                                                                                                                                         |
-| **Mục tiêu**       | Cho phép khách hàng theo dõi vị trí tài xế và trạng thái chuyến theo thời gian thực                                                                                                                                        |
-| **Tác nhân**       | Khách hàng                                                                                                                                                                                                                 |
-| **Tiền điều kiện** | Chuyến đã được tài xế nhận                                                                                                                                                                                                 |
-| **Hậu điều kiện**  | Khách hàng xem được trạng thái và vị trí hiện tại của chuyến                                                                                                                                                               |
-| **Luồng chính**    | 1. Khách hàng mở thông tin chuyến → 2. Hệ thống hiển thị vị trí tài xế → 3. Hệ thống cập nhật trạng thái chuyến → 4. Hiển thị thời gian dự kiến tài xế đến → 5. Khách hàng tiếp tục theo dõi cho đến khi chuyến hoàn thành |
-| **Ngoại lệ**       | Mất kết nối hoặc không nhận được dữ liệu vị trí → hiển thị vị trí/trạng thái cập nhật gần nhất và thông báo khi có dữ liệu mới                                                                                             |
-
-
-### UC09 – Cập nhật trạng thái chuyến
-
-| Thành phần         | Nội dung                                                                                                                                                                                                                          |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tên Use Case**   | Cập nhật trạng thái chuyến                                                                                                                                                                                                        |
-| **Mục tiêu**       | Cho phép tài xế cập nhật quá trình thực hiện chuyến                                                                                                                                                                               |
-| **Tác nhân**       | Tài xế                                                                                                                                                                                                                            |
-| **Tiền điều kiện** | Tài xế đã nhận chuyến                                                                                                                                                                                                             |
-| **Hậu điều kiện**  | Trạng thái chuyến được cập nhật và khách hàng được thông báo                                                                                                                                                                      |
-| **Luồng chính**    | 1. Tài xế di chuyển đến điểm đón → 2. Cập nhật trạng thái “Đã đến điểm đón” → 3. Đón khách → 4. Cập nhật “Đã đón khách” → 5. Bắt đầu di chuyển → 6. Cập nhật “Đang di chuyển” → 7. Đến điểm đến → 8. Cập nhật “Hoàn thành chuyến” |
-| **Ngoại lệ**       | Tài xế không thể cập nhật trạng thái → hệ thống thông báo lỗi; chuyến gặp sự cố → nhân viên vận hành tiếp nhận và hỗ trợ                                                                                                          |
-
-
-### UC10 – Quản lý và giám sát chuyến
-
-| Thành phần         | Nội dung                                                                                                                                                                                                                                                                        |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tên Use Case**   | Quản lý và giám sát chuyến                                                                                                                                                                                                                                                      |
-| **Mục tiêu**       | Giúp nhân viên vận hành theo dõi và xử lý các chuyến đang diễn ra                                                                                                                                                                                                               |
-| **Tác nhân**       | Nhân viên vận hành                                                                                                                                                                                                                                                              |
-| **Tiền điều kiện** | Nhân viên đã đăng nhập và có quyền truy cập                                                                                                                                                                                                                                     |
-| **Hậu điều kiện**  | Thông tin chuyến được cập nhật hoặc sự cố được xử lý                                                                                                                                                                                                                            |
-| **Luồng chính**    | 1. Nhân viên xem danh sách các chuyến → 2. Chọn chuyến cần theo dõi → 3. Kiểm tra thông tin chuyến → 4. Kiểm tra trạng thái và vị trí tài xế → 5. Phát hiện trường hợp chuyến gặp sự cố → 6. Nhân viên hỗ trợ xử lý → 7. Cập nhật kết quả xử lý → 8. Hệ thống lưu lại thông tin |
-| **Ngoại lệ**       | Không có quyền truy cập → hệ thống từ chối thao tác; không tìm thấy chuyến → thông báo không có dữ liệu; thông tin vị trí không được cập nhật → hiển thị trạng thái gần nhất                                                                                                    |
-
-
-### UC11 – Tính cước
-
-| Thành phần         | Nội dung                                                                                                                                                                                                             |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tên Use Case**   | Tính cước chuyến đi                                                                                                                                                                                                  |
-| **Mục tiêu**       | Xác định số tiền khách hàng cần thanh toán sau khi chuyến hoàn thành                                                                                                                                                 |
-| **Tác nhân**       | Hệ thống                                                                                                                                                                                                             |
-| **Tiền điều kiện** | Chuyến đã hoàn thành và có đầy đủ thông tin cần thiết                                                                                                                                                                |
-| **Hậu điều kiện**  | Số tiền phải thanh toán được xác định và lưu vào thông tin chuyến                                                                                                                                                    |
-| **Luồng chính**    | 1. Hệ thống nhận trạng thái chuyến hoàn thành → 2. Lấy thông tin loại dịch vụ → 3. Lấy thông tin chuyến đi → 4. Áp dụng quy tắc tính cước → 5. Xác định số tiền phải trả → 6. Lưu và hiển thị số tiền cho khách hàng |
-| **Ngoại lệ**       | Thiếu thông tin cần thiết → không thể tính cước và thông báo lỗi; dữ liệu chuyến không hợp lệ → yêu cầu kiểm tra lại                                                                                                 |
-
-
-### UC12 – Thanh toán
-
-| Thành phần         | Nội dung                                                                                                                                                                                                                                                                                                                                            |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tên Use Case**   | Thanh toán                                                                                                                                                                                                                                                                                                                                          |
-| **Mục tiêu**       | Cho phép khách hàng thanh toán chi phí chuyến đi                                                                                                                                                                                                                                                                                                    |
-| **Tác nhân**       | Khách hàng, Nhà cung cấp thanh toán                                                                                                                                                                                                                                                                                                                 |
-| **Tiền điều kiện** | Chuyến đã hoàn thành và hệ thống đã xác định số tiền cần thanh toán                                                                                                                                                                                                                                                                                 |
-| **Hậu điều kiện**  | Giao dịch được ghi nhận thành công hoặc thất bại                                                                                                                                                                                                                                                                                                    |
-| **Luồng chính**    | 1. Hệ thống hiển thị số tiền → 2. Khách hàng chọn phương thức thanh toán → 3. Nếu tiền mặt, khách hàng thanh toán trực tiếp cho tài xế → 4. Nếu điện tử, hệ thống chuyển yêu cầu đến nhà cung cấp thanh toán → 5. Nhà cung cấp xử lý giao dịch → 6. Trả kết quả về hệ thống → 7. Hệ thống ghi nhận kết quả thanh toán → 8. Thông báo cho khách hàng |
-| **Ngoại lệ**       | Thanh toán điện tử thất bại → hệ thống thông báo cho khách hàng → cho phép thực hiện lại theo chính sách doanh nghiệp; nhà cung cấp thanh toán không phản hồi → ghi nhận giao dịch đang xử lý                                                                                                                                                       |
-
-
-### UC13 – Xử lý thanh toán thất bại
-
-| Thành phần         | Nội dung                                                                                                                                                                                                                      |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tên Use Case**   | Xử lý thanh toán thất bại                                                                                                                                                                                                     |
-| **Mục tiêu**       | Xử lý trường hợp giao dịch thanh toán điện tử không thành công                                                                                                                                                                |
-| **Tác nhân**       | Khách hàng, Hệ thống, Nhà cung cấp thanh toán                                                                                                                                                                                 |
-| **Tiền điều kiện** | Khách hàng đã thực hiện thanh toán điện tử nhưng giao dịch thất bại                                                                                                                                                           |
-| **Hậu điều kiện**  | Thanh toán được thực hiện lại thành công hoặc giao dịch được ghi nhận là thất bại                                                                                                                                             |
-| **Luồng chính**    | 1. Hệ thống nhận kết quả giao dịch thất bại → 2. Ghi nhận trạng thái → 3. Thông báo cho khách hàng → 4. Khách hàng chọn thực hiện lại → 5. Hệ thống gửi lại yêu cầu thanh toán → 6. Nhận kết quả mới → 7. Cập nhật trạng thái |
-| **Ngoại lệ**       | Thanh toán lại tiếp tục thất bại → thông báo khách hàng và xử lý theo chính sách doanh nghiệp                                                                                                                                 |
-
-
-### UC14 – Gửi thông báo
-
-| Thành phần         | Nội dung                                                                                                                                             |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tên Use Case**   | Gửi thông báo                                                                                                                                        |
-| **Mục tiêu**       | Cung cấp thông tin kịp thời cho khách hàng và tài xế khi có sự kiện quan trọng                                                                       |
-| **Tác nhân**       | Hệ thống                                                                                                                                             |
-| **Tiền điều kiện** | Phát sinh sự kiện cần gửi thông báo                                                                                                                  |
-| **Hậu điều kiện**  | Thông báo được gửi đến người nhận                                                                                                                    |
-| **Luồng chính**    | 1. Hệ thống xác định sự kiện → 2. Xác định người nhận → 3. Xác định kênh thông báo → 4. Tạo nội dung → 5. Gửi thông báo → 6. Ghi nhận trạng thái gửi |
-| **Ngoại lệ**       | Gửi thất bại → hệ thống ghi nhận lỗi và thực hiện lại theo cơ chế xử lý của hệ thống                                                                 |
-
-
-### UC15 – Xem lịch sử chuyến
-
-| Thành phần         | Nội dung                                                                                                                                                                                                 |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tên Use Case**   | Xem lịch sử chuyến                                                                                                                                                                                       |
-| **Mục tiêu**       | Cho phép khách hàng tra cứu các chuyến đã thực hiện                                                                                                                                                      |
-| **Tác nhân**       | Khách hàng                                                                                                                                                                                               |
-| **Tiền điều kiện** | Khách hàng đã đăng nhập                                                                                                                                                                                  |
-| **Hậu điều kiện**  | Lịch sử chuyến được hiển thị                                                                                                                                                                             |
-| **Luồng chính**    | 1. Khách hàng chọn lịch sử chuyến → 2. Hệ thống tìm các chuyến của khách hàng → 3. Hiển thị danh sách chuyến → 4. Khách hàng chọn một chuyến → 5. Hiển thị chi tiết chuyến, tài xế và số tiền thanh toán |
-| **Ngoại lệ**       | Không có chuyến đã thực hiện → hệ thống thông báo chưa có lịch sử                                                                                                                                        |
-
-
-### UC16 – Đánh giá tài xế
-
-| Thành phần         | Nội dung                                                                                                                                                                   |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tên Use Case**   | Đánh giá tài xế                                                                                                                                                            |
-| **Mục tiêu**       | Thu thập đánh giá và phản hồi của khách hàng sau chuyến đi                                                                                                                 |
-| **Tác nhân**       | Khách hàng                                                                                                                                                                 |
-| **Tiền điều kiện** | Chuyến đã hoàn thành và khách hàng chưa đánh giá chuyến                                                                                                                    |
-| **Hậu điều kiện**  | Đánh giá được lưu vào hệ thống                                                                                                                                             |
-| **Luồng chính**    | 1. Khách hàng chọn chuyến đã hoàn thành → 2. Chọn chức năng đánh giá → 3. Chọn số sao → 4. Nhập nhận xét nếu có → 5. Gửi đánh giá → 6. Hệ thống kiểm tra → 7. Lưu đánh giá |
-| **Ngoại lệ**       | Chưa chọn mức đánh giá → yêu cầu bổ sung; chuyến đã được đánh giá → không cho đánh giá lại                                                                                 |
-
-
-### UC17 – Quản lý vận hành
-
-| Thành phần         | Nội dung                                                                                                                                                                                                                                  |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tên Use Case**   | Quản lý vận hành                                                                                                                                                                                                                          |
-| **Mục tiêu**       | Cho phép nhân viên vận hành quản lý các dữ liệu và hoạt động chính của hệ thống                                                                                                                                                           |
-| **Tác nhân**       | Nhân viên vận hành                                                                                                                                                                                                                        |
-| **Tiền điều kiện** | Nhân viên đã đăng nhập và được cấp quyền quản trị                                                                                                                                                                                         |
-| **Hậu điều kiện**  | Thông tin khách hàng, tài xế, phương tiện, chuyến đi hoặc giao dịch được tra cứu/cập nhật                                                                                                                                                 |
-| **Luồng chính**    | 1. Nhân viên đăng nhập → 2. Chọn chức năng quản lý → 3. Xem danh sách dữ liệu → 4. Tìm kiếm/tra cứu thông tin → 5. Thêm, sửa hoặc cập nhật thông tin khi có quyền → 6. Kiểm tra dữ liệu → 7. Lưu thay đổi → 8. Hệ thống ghi nhận thao tác |
-| **Ngoại lệ**       | Không có quyền thực hiện thao tác → hệ thống từ chối; dữ liệu không hợp lệ → không cho lưu; không tìm thấy dữ liệu → thông báo không có kết quả                                                                                           |
-
-
-### UC18 – Xem báo cáo hoạt động
-
-| Thành phần         | Nội dung                                                                                                                                                                                                                                                            |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tên Use Case**   | Xem báo cáo hoạt động                                                                                                                                                                                                                                               |
-| **Mục tiêu**       | Cung cấp thông tin tổng hợp giúp ban lãnh đạo theo dõi tình hình hoạt động và ra quyết định                                                                                                                                                                         |
-| **Tác nhân**       | Ban lãnh đạo, Nhân viên vận hành                                                                                                                                                                                                                                    |
-| **Tiền điều kiện** | Người dùng đã đăng nhập và có quyền xem báo cáo                                                                                                                                                                                                                     |
-| **Hậu điều kiện**  | Báo cáo được tổng hợp và hiển thị                                                                                                                                                                                                                                   |
-| **Luồng chính**    | 1. Người dùng chọn chức năng báo cáo → 2. Chọn loại báo cáo/thời gian → 3. Hệ thống tổng hợp dữ liệu → 4. Tính toán các chỉ số → 5. Hiển thị số lượng chuyến → 6. Hiển thị doanh thu → 7. Hiển thị tỷ lệ hoàn thành/hủy → 8. Hiển thị hiệu quả hoạt động của tài xế |
-| **Ngoại lệ**       | Không có dữ liệu trong khoảng thời gian được chọn → thông báo không có dữ liệu; người dùng không có quyền → từ chối truy cập                                                                                                                                        |
 
 # **Bước 9: Phân tích quy trình nghiệp vụ**
 
