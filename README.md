@@ -785,6 +785,7 @@ flowchart LR
 | 3.1 Nếu người dùng không có quyền xem báo cáo, hệ thống từ chối truy cập. | |
 
 
+
 # Bước 9: Phân tích quy trình nghiệp vụ
 
 ## **9.1. Quy trình nghiệp vụ Use Case “Đăng ký tài khoản”**
@@ -809,18 +810,22 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor ND as Người dùng
-    participant HT as Hệ thống
-    ND->>HT: Chọn Đăng ký
-    HT-->>ND: Hiển thị biểu mẫu
-    ND->>HT: Nhập và gửi thông tin
-    HT->>HT: Kiểm tra thông tin
+    actor A as Người dùng
+    participant B as <<Boundary>>\nDangKyBoundary
+    participant C as <<Control>>\nDangKyControl
+    participant E as <<Entity>>\nTaiKhoan
+    A->>B: Chọn Đăng ký
+    B->>C: Gửi thông tin đăng ký
+    C->>E: Kiểm tra tài khoản
     alt Thông tin không hợp lệ / tài khoản trùng
-        HT-->>ND: Thông báo lỗi
-        ND->>HT: Nhập lại thông tin
+        E-->>C: Thông tin không hợp lệ
+        C-->>B: Thông báo lỗi
+        B-->>A: Yêu cầu nhập lại
     else Hợp lệ
-        HT->>HT: Tạo tài khoản
-        HT-->>ND: Thông báo đăng ký thành công
+        C->>E: Tạo tài khoản
+        E-->>C: Tạo thành công
+        C-->>B: Đăng ký thành công
+        B-->>A: Hiển thị kết quả
     end
 ```
 
@@ -845,16 +850,21 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor ND as Người dùng
-    participant HT as Hệ thống
-    ND->>HT: Nhập thông tin đăng nhập
-    HT->>HT: Xác thực tài khoản
-    alt Thông tin không hợp lệ
-        HT-->>ND: Thông báo đăng nhập thất bại
+    actor A as Người dùng
+    participant B as <<Boundary>>\nDangNhapBoundary
+    participant C as <<Control>>\nDangNhapControl
+    participant E as <<Entity>>\nTaiKhoan
+    A->>B: Nhập thông tin đăng nhập
+    B->>C: Gửi thông tin
+    C->>E: Kiểm tra tài khoản
+    alt Không hợp lệ
+        E-->>C: Xác thực thất bại
+        C-->>B: Thông báo lỗi
+        B-->>A: Đăng nhập thất bại
     else Hợp lệ
-        HT->>HT: Xác định vai trò và quyền
-        HT-->>ND: Đăng nhập thành công
-        HT-->>ND: Hiển thị giao diện theo vai trò
+        E-->>C: Trả thông tin tài khoản/vai trò
+        C-->>B: Đăng nhập thành công
+        B-->>A: Hiển thị giao diện theo vai trò
     end
 ```
 
@@ -878,17 +888,23 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor ND as Người dùng
-    participant HT as Hệ thống
-    ND->>HT: Chọn Đăng xuất
-    HT-->>ND: Yêu cầu xác nhận
-    alt Không xác nhận
-        ND-->>HT: Hủy
-        HT-->>ND: Giữ nguyên phiên
+    actor A as Người dùng
+    participant B as <<Boundary>>\nDangXuatBoundary
+    participant C as <<Control>>\nDangXuatControl
+    participant E as <<Entity>>\nPhienDangNhap
+    A->>B: Chọn Đăng xuất
+    B->>C: Gửi yêu cầu đăng xuất
+    C-->>B: Yêu cầu xác nhận
+    B-->>A: Hiển thị xác nhận
+    alt Hủy
+        A->>B: Hủy đăng xuất
     else Xác nhận
-        ND->>HT: Xác nhận đăng xuất
-        HT->>HT: Kết thúc phiên
-        HT-->>ND: Chuyển về màn hình đăng nhập
+        A->>B: Xác nhận
+        B->>C: Xác nhận đăng xuất
+        C->>E: Kết thúc phiên
+        E-->>C: Phiên đã kết thúc
+        C-->>B: Đăng xuất thành công
+        B-->>A: Chuyển về màn hình đăng nhập
     end
 ```
 
@@ -915,20 +931,21 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor ND as Người dùng
-    participant HT as Hệ thống
-    ND->>HT: Yêu cầu truy cập chức năng
-    HT->>HT: Kiểm tra phiên đăng nhập
-    alt Chưa đăng nhập
-        HT-->>ND: Từ chối truy cập
-    else Đã đăng nhập
-        HT->>HT: Xác định vai trò
-        HT->>HT: Kiểm tra quyền
-        alt Không có quyền
-            HT-->>ND: Thông báo không có quyền
-        else Có quyền
-            HT-->>ND: Cho phép truy cập
-        end
+    actor A as Người dùng
+    participant B as <<Boundary>>\nPhanQuyenBoundary
+    participant C as <<Control>>\nPhanQuyenControl
+    participant E as <<Entity>>\nTaiKhoan
+    A->>B: Yêu cầu truy cập chức năng
+    B->>C: Gửi yêu cầu
+    C->>E: Kiểm tra tài khoản và vai trò
+    alt Chưa đăng nhập/không có quyền
+        E-->>C: Không được phép
+        C-->>B: Từ chối truy cập
+        B-->>A: Thông báo không có quyền
+    else Có quyền
+        E-->>C: Quyền hợp lệ
+        C-->>B: Cho phép truy cập
+        B-->>A: Hiển thị chức năng
     end
 ```
 
@@ -954,17 +971,27 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor ND as Người dùng
-    participant HT as Hệ thống
-    ND->>HT: Chọn thông tin cá nhân
-    HT-->>ND: Hiển thị thông tin
-    ND->>HT: Chọn cập nhật và nhập thông tin mới
-    HT->>HT: Kiểm tra dữ liệu
-    alt Dữ liệu không hợp lệ
-        HT-->>ND: Thông báo lỗi
+    actor A as Người dùng
+    participant B as <<Boundary>>\nThongTinCaNhanBoundary
+    participant C as <<Control>>\nThongTinCaNhanControl
+    participant E as <<Entity>>\nTaiKhoan
+    A->>B: Mở thông tin cá nhân
+    B->>C: Yêu cầu thông tin
+    C->>E: Lấy thông tin tài khoản
+    E-->>C: Trả thông tin
+    C-->>B: Hiển thị thông tin
+    B-->>A: Hiển thị
+    A->>B: Nhập thông tin cập nhật
+    B->>C: Gửi dữ liệu
+    C->>E: Kiểm tra và lưu
+    alt Không hợp lệ
+        E-->>C: Dữ liệu không hợp lệ
+        C-->>B: Thông báo lỗi
+        B-->>A: Yêu cầu nhập lại
     else Hợp lệ
-        HT->>HT: Lưu thông tin
-        HT-->>ND: Thông báo cập nhật thành công
+        E-->>C: Lưu thành công
+        C-->>B: Cập nhật thành công
+        B-->>A: Hiển thị kết quả
     end
 ```
 
@@ -993,23 +1020,22 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor KH as Khách hàng
-    participant HT as Hệ thống
-    KH->>HT: Nhập điểm đón, điểm đến, loại xe
-    HT->>HT: Kiểm tra thông tin
+    actor A as Khách hàng
+    participant B as <<Boundary>>\nDatXeBoundary
+    participant C as <<Control>>\nDatXeControl
+    participant E as <<Entity>>\nYeuCauDatXe
+    A->>B: Nhập điểm đón, điểm đến, loại xe
+    B->>C: Gửi thông tin đặt xe
+    C->>E: Kiểm tra thông tin và chuyến đang có
     alt Không hợp lệ
-        HT-->>KH: Thông báo lỗi
+        E-->>C: Không hợp lệ
+        C-->>B: Thông báo lỗi
+        B-->>A: Yêu cầu nhập lại
     else Hợp lệ
-        HT-->>KH: Hiển thị cước dự kiến
-        KH->>HT: Chọn phương thức thanh toán
-        KH->>HT: Xác nhận đặt xe
-        HT->>HT: Tạo yêu cầu đặt xe
-        alt Tạo thất bại
-            HT-->>KH: Thông báo lỗi
-        else Tạo thành công
-            HT-->>KH: Xác nhận yêu cầu
-            HT->>HT: Chuyển sang xử lý tìm tài xế
-        end
+        C->>E: Tạo yêu cầu đặt xe
+        E-->>C: Yêu cầu được tạo
+        C-->>B: Hiển thị xác nhận
+        B-->>A: Đặt xe thành công
     end
 ```
 
@@ -1035,17 +1061,21 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor KH as Khách hàng
-    participant HT as Hệ thống
-    KH->>HT: Chọn chuyến đang diễn ra
-    HT->>HT: Kiểm tra quyền và dữ liệu chuyến
-    alt Không có dữ liệu trạng thái/vị trí
-        HT-->>KH: Thông báo chưa có dữ liệu
-    else Có dữ liệu
-        HT-->>KH: Hiển thị trạng thái và vị trí
-        loop Khi chuyến chưa kết thúc
-            HT-->>KH: Cập nhật trạng thái/vị trí mới
-        end
+    actor A as Khách hàng
+    participant B as <<Boundary>>\nTheoDoiChuyenBoundary
+    participant C as <<Control>>\nTheoDoiChuyenControl
+    participant E as <<Entity>>\nChuyenDi
+    A->>B: Mở thông tin chuyến
+    B->>C: Yêu cầu trạng thái/vị trí
+    C->>E: Lấy dữ liệu chuyến
+    alt Có dữ liệu
+        E-->>C: Trạng thái/vị trí
+        C-->>B: Cập nhật thông tin
+        B-->>A: Hiển thị
+    else Không có dữ liệu
+        E-->>C: Không có dữ liệu
+        C-->>B: Thông báo
+        B-->>A: Hiển thị thông báo
     end
 ```
 
@@ -1073,23 +1103,27 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor KH as Khách hàng
-    participant HT as Hệ thống
-    KH->>HT: Mở lịch sử chuyến đi
-    HT-->>KH: Hiển thị lịch sử
-    KH->>HT: Chọn chuyến
-    HT->>HT: Kiểm tra trạng thái đánh giá
-    alt Đã đánh giá
-        HT-->>KH: Hiển thị đánh giá hiện có
-    else Chưa đánh giá
-        KH->>HT: Nhập và gửi đánh giá
-        HT->>HT: Kiểm tra đánh giá
-        alt Không hợp lệ
-            HT-->>KH: Thông báo lỗi
-        else Hợp lệ
-            HT->>HT: Lưu đánh giá
-            HT-->>KH: Thông báo thành công
-        end
+    actor A as Khách hàng
+    participant B as <<Boundary>>\nLichSuDanhGiaBoundary
+    participant C as <<Control>>\nLichSuDanhGiaControl
+    participant E as <<Entity>>\nChuyenDi
+    A->>B: Mở lịch sử chuyến
+    B->>C: Yêu cầu lịch sử
+    C->>E: Lấy lịch sử
+    E-->>C: Danh sách chuyến
+    C-->>B: Hiển thị lịch sử
+    A->>B: Chọn chuyến và nhập đánh giá
+    B->>C: Gửi đánh giá
+    C->>E: Kiểm tra đánh giá
+    alt Đã đánh giá/không hợp lệ
+        E-->>C: Không thể đánh giá
+        C-->>B: Thông báo
+        B-->>A: Hiển thị lỗi
+    else Hợp lệ
+        C->>E: Lưu đánh giá
+        E-->>C: Lưu thành công
+        C-->>B: Thông báo thành công
+        B-->>A: Hiển thị
     end
 ```
 
@@ -1115,17 +1149,22 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor ND as Tài xế/Nhân viên vận hành
-    participant HT as Hệ thống
-    ND->>HT: Mở hồ sơ tài xế
-    HT-->>ND: Hiển thị hồ sơ
-    ND->>HT: Nhập thông tin cập nhật
-    HT->>HT: Kiểm tra dữ liệu
-    alt Không hợp lệ
-        HT-->>ND: Thông báo lỗi
+    actor A as Tài xế/Nhân viên vận hành
+    participant B as <<Boundary>>\nHoSoTaiXeBoundary
+    participant C as <<Control>>\nHoSoTaiXeControl
+    participant E as <<Entity>>\nHoSoTaiXe
+    A->>B: Chọn chức năng cập nhật hồ sơ
+    B->>C: Gửi yêu cầu
+    C->>E: Kiểm tra điều kiện và dữ liệu
+    alt Không hợp lệ/không đủ điều kiện
+        E-->>C: Từ chối xử lý
+        C-->>B: Thông báo lỗi
+        B-->>A: Hiển thị kết quả
     else Hợp lệ
-        HT->>HT: Lưu hồ sơ
-        HT-->>ND: Thông báo thành công
+        C->>E: Thực hiện cập nhật hồ sơ
+        E-->>C: Kết quả xử lý
+        C-->>B: Thông báo kết quả
+        B-->>A: Hiển thị
     end
 ```
 
@@ -1151,18 +1190,22 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor ND as Tài xế/Nhân viên vận hành
-    participant HT as Hệ thống
-    ND->>HT: Mở quản lý phương tiện
-    HT-->>ND: Hiển thị danh sách
-    ND->>HT: Chọn thêm/cập nhật
-    ND->>HT: Nhập thông tin phương tiện
-    HT->>HT: Kiểm tra dữ liệu
-    alt Không hợp lệ
-        HT-->>ND: Thông báo lỗi
+    actor A as Tài xế/Nhân viên vận hành
+    participant B as <<Boundary>>\nPhuongTienBoundary
+    participant C as <<Control>>\nPhuongTienControl
+    participant E as <<Entity>>\nPhuongTien
+    A->>B: Chọn chức năng thêm/cập nhật phương tiện
+    B->>C: Gửi yêu cầu
+    C->>E: Kiểm tra điều kiện và dữ liệu
+    alt Không hợp lệ/không đủ điều kiện
+        E-->>C: Từ chối xử lý
+        C-->>B: Thông báo lỗi
+        B-->>A: Hiển thị kết quả
     else Hợp lệ
-        HT->>HT: Lưu phương tiện
-        HT-->>ND: Thông báo thành công
+        C->>E: Thực hiện thêm/cập nhật phương tiện
+        E-->>C: Kết quả xử lý
+        C-->>B: Thông báo kết quả
+        B-->>A: Hiển thị
     end
 ```
 
@@ -1185,15 +1228,22 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor TX as Tài xế
-    participant HT as Hệ thống
-    TX->>HT: Chọn trạng thái sẵn sàng
-    HT->>HT: Kiểm tra chuyến đang thực hiện
-    alt Đang có chuyến
-        HT-->>TX: Không cho chuyển sang Sẵn sàng
-    else Không có chuyến
-        HT->>HT: Cập nhật trạng thái
-        HT-->>TX: Thông báo cập nhật thành công
+    actor A as Tài xế
+    participant B as <<Boundary>>\nTrangThaiSanSangBoundary
+    participant C as <<Control>>\nTrangThaiSanSangControl
+    participant E as <<Entity>>\nTaiXe
+    A->>B: Chọn chức năng cập nhật trạng thái
+    B->>C: Gửi yêu cầu
+    C->>E: Kiểm tra điều kiện và dữ liệu
+    alt Không hợp lệ/không đủ điều kiện
+        E-->>C: Từ chối xử lý
+        C-->>B: Thông báo lỗi
+        B-->>A: Hiển thị kết quả
+    else Hợp lệ
+        C->>E: Thực hiện cập nhật trạng thái
+        E-->>C: Kết quả xử lý
+        C-->>B: Thông báo kết quả
+        B-->>A: Hiển thị
     end
 ```
 
@@ -1217,15 +1267,22 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor TX as Tài xế
-    participant HT as Hệ thống
-    TX->>HT: Chọn nhận chuyến
-    HT->>HT: Kiểm tra trạng thái tài xế và yêu cầu
-    alt Không còn khả dụng
-        HT-->>TX: Thông báo chuyến không khả dụng
-    else Còn khả dụng
-        HT->>HT: Gán chuyến cho tài xế
-        HT-->>TX: Thông báo nhận chuyến thành công
+    actor A as Tài xế
+    participant B as <<Boundary>>\nNhanChuyenBoundary
+    participant C as <<Control>>\nNhanChuyenControl
+    participant E as <<Entity>>\nYeuCauDatXe
+    A->>B: Chọn chức năng nhận chuyến
+    B->>C: Gửi yêu cầu
+    C->>E: Kiểm tra điều kiện và dữ liệu
+    alt Không hợp lệ/không đủ điều kiện
+        E-->>C: Từ chối xử lý
+        C-->>B: Thông báo lỗi
+        B-->>A: Hiển thị kết quả
+    else Hợp lệ
+        C->>E: Thực hiện nhận chuyến
+        E-->>C: Kết quả xử lý
+        C-->>B: Thông báo kết quả
+        B-->>A: Hiển thị
     end
 ```
 
@@ -1248,18 +1305,22 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor TX as Tài xế
-    participant HT as Hệ thống
-    TX->>HT: Chọn từ chối chuyến
-    HT-->>TX: Yêu cầu xác nhận
-    alt Hủy từ chối
-        TX-->>HT: Hủy
-        HT-->>TX: Giữ nguyên yêu cầu
-    else Xác nhận từ chối
-        TX->>HT: Xác nhận
-        HT->>HT: Ghi nhận từ chối
-        HT->>HT: Tìm tài xế khác
-        HT-->>TX: Thông báo đã ghi nhận
+    actor A as Tài xế
+    participant B as <<Boundary>>\nTuChoiChuyenBoundary
+    participant C as <<Control>>\nTuChoiChuyenControl
+    participant E as <<Entity>>\nYeuCauDatXe
+    A->>B: Chọn chức năng từ chối chuyến
+    B->>C: Gửi yêu cầu
+    C->>E: Kiểm tra điều kiện và dữ liệu
+    alt Không hợp lệ/không đủ điều kiện
+        E-->>C: Từ chối xử lý
+        C-->>B: Thông báo lỗi
+        B-->>A: Hiển thị kết quả
+    else Hợp lệ
+        C->>E: Thực hiện từ chối chuyến
+        E-->>C: Kết quả xử lý
+        C-->>B: Thông báo kết quả
+        B-->>A: Hiển thị
     end
 ```
 
@@ -1285,16 +1346,22 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    participant KH as Khách hàng
-    participant HT as Hệ thống
-    KH->>HT: Gửi yêu cầu đặt xe
-    HT->>HT: Kiểm tra khách hàng và thông tin chuyến
-    alt Yêu cầu không hợp lệ / khách đang có chuyến
-        HT-->>KH: Thông báo không thể tiếp nhận
-    else Hợp lệ
-        HT->>HT: Tạo yêu cầu đặt xe
-        HT->>HT: Chuyển sang tìm tài xế
-        HT-->>KH: Xác nhận đã tiếp nhận
+    actor A as Khách hàng
+    participant B as <<Boundary>>\nTiepNhanDatXeBoundary
+    participant C as <<Control>>\nTiepNhanDatXeControl
+    participant E as <<Entity>>\nYeuCauDatXe
+    A->>B: Gửi/yêu cầu xử lý chuyến
+    B->>C: Chuyển yêu cầu
+    C->>E: Kiểm tra yêu cầu và tài xế
+    alt Yêu cầu không hợp lệ/không có tài xế phù hợp
+        E-->>C: Không thể xử lý
+        C-->>B: Thông báo kết quả
+        B-->>A: Hiển thị thông báo
+    else Có tài xế phù hợp
+        C->>E: Gửi/lưu phân công
+        E-->>C: Kết quả
+        C-->>B: Cập nhật kết quả
+        B-->>A: Hiển thị
     end
 ```
 
@@ -1324,23 +1391,22 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    participant HT as Hệ thống
-    actor TX as Tài xế
-    participant KH as Khách hàng
-    HT->>HT: Nhận yêu cầu hợp lệ
-    HT->>HT: Tìm tài xế sẵn sàng
-    alt Không có tài xế phù hợp
-        HT-->>KH: Thông báo chưa có tài xế phù hợp
-    else Có tài xế
-        HT->>HT: Lọc theo loại xe và vị trí
-        HT->>TX: Gửi yêu cầu nhận chuyến
-        alt Tài xế nhận
-            TX->>HT: Chấp nhận
-            HT->>HT: Phân công tài xế
-            HT-->>KH: Thông báo tài xế được phân công
-        else Tài xế từ chối/không phản hồi
-            HT->>HT: Chuyển sang tài xế tiếp theo
-        end
+    actor A as Hệ thống
+    participant B as <<Boundary>>\nPhanCongTaiXeBoundary
+    participant C as <<Control>>\nPhanCongTaiXeControl
+    participant E as <<Entity>>\nTaiXe
+    A->>B: Gửi/yêu cầu xử lý chuyến
+    B->>C: Chuyển yêu cầu
+    C->>E: Kiểm tra yêu cầu và tài xế
+    alt Yêu cầu không hợp lệ/không có tài xế phù hợp
+        E-->>C: Không thể xử lý
+        C-->>B: Thông báo kết quả
+        B-->>A: Hiển thị thông báo
+    else Có tài xế phù hợp
+        C->>E: Gửi/lưu phân công
+        E-->>C: Kết quả
+        C-->>B: Cập nhật kết quả
+        B-->>A: Hiển thị
     end
 ```
 
@@ -1369,22 +1435,22 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    participant HT as Hệ thống
-    actor TX as Tài xế
-    actor KH as Khách hàng
-    HT->>TX: Gửi yêu cầu nhận chuyến
-    HT->>HT: Theo dõi thời gian phản hồi
-    alt Tài xế chấp nhận
-        TX->>HT: Chấp nhận
-        HT->>HT: Kết thúc tìm kiếm và phân công
-    else Từ chối hoặc không phản hồi
-        HT->>HT: Ghi nhận kết quả
-        HT->>HT: Tìm tài xế phù hợp tiếp theo
-        alt Còn tài xế
-            HT->>TX: Gửi yêu cầu tiếp theo
-        else Không còn tài xế
-            HT-->>KH: Thông báo chưa tìm được tài xế
-        end
+    actor A as Hệ thống
+    participant B as <<Boundary>>\nXuLyTaiXeBoundary
+    participant C as <<Control>>\nXuLyTaiXeControl
+    participant E as <<Entity>>\nYeuCauDatXe
+    A->>B: Gửi/yêu cầu xử lý chuyến
+    B->>C: Chuyển yêu cầu
+    C->>E: Kiểm tra yêu cầu và tài xế
+    alt Yêu cầu không hợp lệ/không có tài xế phù hợp
+        E-->>C: Không thể xử lý
+        C-->>B: Thông báo kết quả
+        B-->>A: Hiển thị thông báo
+    else Có tài xế phù hợp
+        C->>E: Gửi/lưu phân công
+        E-->>C: Kết quả
+        C-->>B: Cập nhật kết quả
+        B-->>A: Hiển thị
     end
 ```
 
@@ -1409,19 +1475,22 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor TX as Tài xế
-    participant HT as Hệ thống
-    actor KH as Khách hàng
-    TX->>HT: Cập nhật trạng thái/vị trí
-    HT->>HT: Ghi nhận dữ liệu
-    HT-->>KH: Cung cấp trạng thái/vị trí
-    loop Khi chuyến chưa kết thúc
-        TX->>HT: Cập nhật trạng thái/vị trí mới
-        HT-->>KH: Cập nhật dữ liệu
+    actor A as Tài xế/Khách hàng
+    participant B as <<Boundary>>\nTheoDoiViTriBoundary
+    participant C as <<Control>>\nCapNhatChuyenControl
+    participant E as <<Entity>>\nChuyenDi
+    A->>B: Mở thông tin chuyến
+    B->>C: Yêu cầu trạng thái/vị trí
+    C->>E: Lấy dữ liệu chuyến
+    alt Có dữ liệu
+        E-->>C: Trạng thái/vị trí
+        C-->>B: Cập nhật thông tin
+        B-->>A: Hiển thị
+    else Không có dữ liệu
+        E-->>C: Không có dữ liệu
+        C-->>B: Thông báo
+        B-->>A: Hiển thị thông báo
     end
-    TX->>HT: Cập nhật hoàn thành chuyến
-    HT->>HT: Chốt trạng thái
-    HT-->>TX: Không cho cập nhật thêm
 ```
 
 ## **9.18. Quy trình nghiệp vụ Use Case “Theo dõi và quản lý các chuyến đang diễn ra”**
@@ -1448,21 +1517,21 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor NV as Nhân viên vận hành
-    participant HT as Hệ thống
-    NV->>HT: Mở danh sách chuyến đang diễn ra
-    HT->>HT: Kiểm tra quyền
+    actor A as Nhân viên vận hành
+    participant B as <<Boundary>>\nQuanLyChuyenBoundary
+    participant C as <<Control>>\nQuanLyChuyenControl
+    participant E as <<Entity>>\nChuyenDi
+    A->>B: Mở danh sách chuyến đang diễn ra
+    B->>C: Yêu cầu danh sách
+    C->>E: Kiểm tra quyền và lấy dữ liệu
     alt Không có quyền
-        HT-->>NV: Từ chối truy cập
+        E-->>C: Không có quyền
+        C-->>B: Từ chối
+        B-->>A: Thông báo
     else Có quyền
-        HT->>HT: Truy vấn chuyến đang diễn ra
-        alt Không có chuyến
-            HT-->>NV: Thông báo không có dữ liệu
-        else Có chuyến
-            HT-->>NV: Hiển thị danh sách
-            NV->>HT: Chọn chuyến
-            HT-->>NV: Hiển thị thông tin chuyến
-        end
+        E-->>C: Danh sách chuyến
+        C-->>B: Hiển thị
+        B-->>A: Xem và quản lý
     end
 ```
 
@@ -1491,23 +1560,22 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor NV as Nhân viên vận hành
-    participant HT as Hệ thống
-    NV->>HT: Tiếp nhận yêu cầu hỗ trợ
-    NV->>HT: Kiểm tra thông tin sự cố
+    actor A as Nhân viên vận hành
+    participant B as <<Boundary>>\nHoTroSuCoBoundary
+    participant C as <<Control>>\nHoTroSuCoControl
+    participant E as <<Entity>>\nSuCoChuyenDi
+    A->>B: Gửi/tiếp nhận yêu cầu hỗ trợ
+    B->>C: Chuyển thông tin sự cố
+    C->>E: Kiểm tra sự cố
     alt Thông tin chưa đầy đủ
-        HT-->>NV: Yêu cầu bổ sung thông tin
-        NV->>HT: Bổ sung thông tin
-    else Thông tin đầy đủ
-        NV->>HT: Xác định hướng xử lý
-        alt Có thể xử lý trực tiếp
-            NV->>HT: Thực hiện xử lý
-            HT->>HT: Ghi nhận kết quả
-            HT-->>NV: Xác nhận đã ghi nhận
-        else Không thể xử lý trực tiếp
-            HT->>HT: Ghi nhận trạng thái cần hỗ trợ thêm
-            HT-->>NV: Thông báo chưa thể xử lý trực tiếp
-        end
+        E-->>C: Yêu cầu bổ sung
+        C-->>B: Thông báo
+        B-->>A: Bổ sung thông tin
+    else Đủ thông tin
+        C->>E: Ghi nhận hướng xử lý
+        E-->>C: Kết quả xử lý
+        C-->>B: Cập nhật kết quả
+        B-->>A: Thông báo
     end
 ```
 
@@ -1534,19 +1602,21 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor NV as Nhân viên vận hành
-    participant HT as Hệ thống
-    NV->>HT: Nhập tiêu chí tra cứu
-    HT->>HT: Kiểm tra quyền
-    alt Không có quyền
-        HT-->>NV: Từ chối truy cập
-    else Có quyền
-        HT->>HT: Truy vấn giao dịch
-        alt Không có kết quả
-            HT-->>NV: Thông báo không có giao dịch phù hợp
-        else Có kết quả
-            HT-->>NV: Hiển thị thông tin giao dịch
-        end
+    actor A as Nhân viên vận hành
+    participant B as <<Boundary>>\nTraCuuGiaoDichBoundary
+    participant C as <<Control>>\nTraCuuGiaoDichControl
+    participant E as <<Entity>>\nGiaoDich
+    A->>B: Nhập tiêu chí tra cứu
+    B->>C: Gửi yêu cầu
+    C->>E: Kiểm tra quyền và tra cứu
+    alt Không có quyền/không có kết quả
+        E-->>C: Không thể tra cứu/kết quả rỗng
+        C-->>B: Thông báo
+        B-->>A: Hiển thị
+    else Có kết quả
+        E-->>C: Danh sách giao dịch
+        C-->>B: Hiển thị
+        B-->>A: Xem kết quả
     end
 ```
 
@@ -1572,15 +1642,22 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    participant HT as Hệ thống
-    HT->>HT: Kiểm tra thông tin chuyến
+    actor A as Hệ thống
+    participant B as <<Boundary>>\nTinhCuocBoundary
+    participant C as <<Control>>\nTinhCuocControl
+    participant E as <<Entity>>\nCuocChuyenDi
+    A->>B: Yêu cầu tính cước
+    B->>C: Chuyển yêu cầu
+    C->>E: Lấy thông tin chuyến và loại xe
     alt Thiếu thông tin
-        HT-->>HT: Ghi nhận chưa thể tính cước
+        E-->>C: Thiếu dữ liệu
+        C-->>B: Thông báo chưa thể tính cước
     else Đủ thông tin
-        HT->>HT: Xác định loại xe và dữ liệu chuyến
-        HT->>HT: Áp dụng quy tắc tính cước
-        HT->>HT: Tính và lưu cước
-        HT-->>HT: Cập nhật cước cho chuyến
+        C->>C: Áp dụng quy tắc tính cước
+        C->>E: Lưu cước
+        E-->>C: Lưu thành công
+        C-->>B: Trả kết quả cước
+        B-->>A: Hiển thị cước
     end
 ```
 
@@ -1608,24 +1685,23 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor KH as Khách hàng
-    participant HT as Hệ thống
-    participant NTT as Nhà cung cấp thanh toán
-    KH->>HT: Chọn phương thức thanh toán
-    alt Tiền mặt
-        HT->>HT: Ghi nhận phương thức tiền mặt
-        HT-->>KH: Ghi nhận thanh toán theo phương thức đã chọn
-    else Thanh toán điện tử
-        KH->>HT: Xác nhận thanh toán
-        HT->>NTT: Gửi yêu cầu thanh toán
-        NTT-->>HT: Trả kết quả
-        alt Thành công
-            HT->>HT: Ghi nhận thành công
-            HT-->>KH: Thông báo thanh toán thành công
-        else Thất bại
-            HT->>HT: Ghi nhận thất bại
-            HT-->>KH: Thông báo thanh toán thất bại
-        end
+    actor A as Khách hàng
+    participant B as <<Boundary>>\nThanhToanBoundary
+    participant C as <<Control>>\nThanhToanControl
+    participant E as <<Entity>>\nGiaoDich
+    A->>B: Chọn/thực hiện thanh toán
+    B->>C: Gửi yêu cầu thanh toán
+    C->>E: Kiểm tra giao dịch
+    alt Giao dịch không hợp lệ/thất bại
+        E-->>C: Kết quả thất bại
+        C-->>B: Thông báo thất bại
+        B-->>A: Hiển thị và cho phép thanh toán lại
+    else Thành công
+        E-->>C: Kết quả hợp lệ
+        C->>E: Ghi nhận giao dịch thành công
+        E-->>C: Đã ghi nhận
+        C-->>B: Thông báo thành công
+        B-->>A: Hiển thị
     end
 ```
 
@@ -1650,16 +1726,23 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    participant NTT as Nhà cung cấp thanh toán
-    participant HT as Hệ thống
-    NTT->>HT: Gửi kết quả thanh toán
-    HT->>HT: Kiểm tra thông tin giao dịch
-    alt Thông tin không hợp lệ
-        HT-->>NTT: Không ghi nhận kết quả hợp lệ
-    else Hợp lệ
-        HT->>HT: Cập nhật trạng thái thanh toán
-        HT->>HT: Lưu giao dịch
-        HT-->>NTT: Xác nhận đã ghi nhận
+    actor A as Hệ thống
+    participant B as <<Boundary>>\nKetQuaThanhToanBoundary
+    participant C as <<Control>>\nKetQuaThanhToanControl
+    participant E as <<Entity>>\nGiaoDich
+    A->>B: Chọn/thực hiện thanh toán
+    B->>C: Gửi yêu cầu thanh toán
+    C->>E: Kiểm tra giao dịch
+    alt Giao dịch không hợp lệ/thất bại
+        E-->>C: Kết quả thất bại
+        C-->>B: Thông báo thất bại
+        B-->>A: Hiển thị và cho phép thanh toán lại
+    else Thành công
+        E-->>C: Kết quả hợp lệ
+        C->>E: Ghi nhận giao dịch thành công
+        E-->>C: Đã ghi nhận
+        C-->>B: Thông báo thành công
+        B-->>A: Hiển thị
     end
 ```
 
@@ -1686,24 +1769,23 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor KH as Khách hàng
-    participant HT as Hệ thống
-    participant NTT as Nhà cung cấp thanh toán
-    HT-->>KH: Thông báo thanh toán thất bại
-    alt Không thanh toán lại
-        KH-->>HT: Hủy thanh toán lại
-        HT->>HT: Giữ trạng thái chưa thanh toán
-    else Thanh toán lại
-        KH->>HT: Chọn thanh toán lại
-        HT->>NTT: Gửi lại yêu cầu
-        NTT-->>HT: Trả kết quả
-        alt Thành công
-            HT->>HT: Ghi nhận thành công
-            HT-->>KH: Thông báo thành công
-        else Tiếp tục thất bại
-            HT->>HT: Giữ trạng thái thất bại
-            HT-->>KH: Thông báo thất bại
-        end
+    actor A as Khách hàng/Hệ thống
+    participant B as <<Boundary>>\nThanhToanLaiBoundary
+    participant C as <<Control>>\nThanhToanLaiControl
+    participant E as <<Entity>>\nGiaoDich
+    A->>B: Chọn/thực hiện thanh toán
+    B->>C: Gửi yêu cầu thanh toán
+    C->>E: Kiểm tra giao dịch
+    alt Giao dịch không hợp lệ/thất bại
+        E-->>C: Kết quả thất bại
+        C-->>B: Thông báo thất bại
+        B-->>A: Hiển thị và cho phép thanh toán lại
+    else Thành công
+        E-->>C: Kết quả hợp lệ
+        C->>E: Ghi nhận giao dịch thành công
+        E-->>C: Đã ghi nhận
+        C-->>B: Thông báo thành công
+        B-->>A: Hiển thị
     end
 ```
 
@@ -1731,23 +1813,18 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    participant HT as Hệ thống
-    actor ND as Người nhận
-    participant K as Kênh thông báo
-    HT->>HT: Xác định sự kiện và người nhận
-    HT->>HT: Xác định nội dung/kênh
-    HT->>K: Gửi thông báo
-    alt Kênh chính hoạt động
-        K-->>ND: Nhận thông báo
-        K-->>HT: Xác nhận gửi
-    else Kênh chính không khả dụng
-        HT->>K: Gửi qua kênh phù hợp khác
-        alt Gửi thành công
-            K-->>ND: Nhận thông báo
-            K-->>HT: Xác nhận gửi
-        else Gửi thất bại
-            HT->>HT: Ghi nhận trạng thái gửi thất bại
-        end
+    actor A as Hệ thống
+    participant B as <<Boundary>>\nThongBaoBoundary
+    participant C as <<Control>>\nThongBaoControl
+    participant E as <<Entity>>\nThongBao
+    A->>C: Phát sinh sự kiện
+    C->>E: Xác định người nhận và nội dung
+    E-->>C: Thông tin thông báo
+    C->>B: Gửi thông báo qua kênh chính
+    alt Kênh chính không khả dụng
+        C->>B: Chuyển sang kênh phù hợp khác
+    else Gửi thành công
+        B-->>A: Người nhận nhận thông báo
     end
 ```
 
@@ -1775,20 +1852,22 @@ flowchart TD
 
 ```mermaid
 sequenceDiagram
-    actor ND as Nhân viên vận hành/Ban lãnh đạo
-    participant HT as Hệ thống
-    ND->>HT: Chọn loại báo cáo và thời gian
-    HT->>HT: Kiểm tra quyền
-    alt Không có quyền
-        HT-->>ND: Từ chối truy cập
-    else Có quyền
-        HT->>HT: Truy vấn dữ liệu
-        alt Không có dữ liệu
-            HT-->>ND: Thông báo không có dữ liệu
-        else Có dữ liệu
-            HT->>HT: Tổng hợp và thống kê
-            HT-->>ND: Hiển thị báo cáo
-        end
+    actor A as Nhân viên vận hành/Ban lãnh đạo
+    participant B as <<Boundary>>\nBaoCaoBoundary
+    participant C as <<Control>>\nBaoCaoControl
+    participant E as <<Entity>>\nBaoCao
+    A->>B: Chọn loại báo cáo và thời gian
+    B->>C: Gửi yêu cầu
+    C->>E: Kiểm tra quyền và lấy dữ liệu
+    alt Không có quyền/không có dữ liệu
+        E-->>C: Không được phép/không có dữ liệu
+        C-->>B: Thông báo
+        B-->>A: Hiển thị thông báo
+    else Có dữ liệu
+        E-->>C: Dữ liệu báo cáo
+        C->>C: Tổng hợp và thống kê
+        C-->>B: Trả báo cáo
+        B-->>A: Hiển thị báo cáo
     end
 ```
 
