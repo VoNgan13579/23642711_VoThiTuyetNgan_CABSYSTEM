@@ -785,7 +785,1013 @@ flowchart LR
 | 3.1 Nếu người dùng không có quyền xem báo cáo, hệ thống từ chối truy cập. | |
 
 
-# **Bước 9: Phân tích quy trình nghiệp vụ**
+# Bước 9: Phân tích quy trình nghiệp vụ
+
+## **9.1. Quy trình nghiệp vụ Use Case “Đăng ký tài khoản”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Người dùng chọn Đăng ký]
+    B --> C[Nhập thông tin đăng ký]
+    C --> D{Thông tin hợp lệ?}
+    D -- Không --> E[Hiển thị lỗi và yêu cầu nhập lại]
+    E --> C
+    D -- Có --> F{Tài khoản đã tồn tại?}
+    F -- Có --> E
+    F -- Không --> G[Tạo tài khoản]
+    G --> H[Thông báo đăng ký thành công]
+    H --> I([Kết thúc])
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor ND as Người dùng
+    participant HT as Hệ thống
+    ND->>HT: Chọn Đăng ký
+    HT-->>ND: Hiển thị biểu mẫu
+    ND->>HT: Nhập và gửi thông tin
+    HT->>HT: Kiểm tra thông tin
+    alt Thông tin không hợp lệ / tài khoản trùng
+        HT-->>ND: Thông báo lỗi
+        ND->>HT: Nhập lại thông tin
+    else Hợp lệ
+        HT->>HT: Tạo tài khoản
+        HT-->>ND: Thông báo đăng ký thành công
+    end
+```
+
+## **9.2. Quy trình nghiệp vụ Use Case “Đăng nhập hệ thống”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Nhập thông tin đăng nhập]
+    B --> C[Hệ thống xác thực tài khoản]
+    C --> D{Thông tin hợp lệ?}
+    D -- Không --> E[Thông báo đăng nhập thất bại]
+    E --> B
+    D -- Có --> F[Xác định vai trò]
+    F --> G[Cấp quyền truy cập]
+    G --> H[Hiển thị giao diện theo vai trò]
+    H --> I([Kết thúc])
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor ND as Người dùng
+    participant HT as Hệ thống
+    ND->>HT: Nhập thông tin đăng nhập
+    HT->>HT: Xác thực tài khoản
+    alt Thông tin không hợp lệ
+        HT-->>ND: Thông báo đăng nhập thất bại
+    else Hợp lệ
+        HT->>HT: Xác định vai trò và quyền
+        HT-->>ND: Đăng nhập thành công
+        HT-->>ND: Hiển thị giao diện theo vai trò
+    end
+```
+
+## **9.3. Quy trình nghiệp vụ Use Case “Đăng xuất hệ thống”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Người dùng chọn Đăng xuất]
+    B --> C[Hệ thống yêu cầu xác nhận]
+    C --> D{Xác nhận?}
+    D -- Không --> E[Quay lại màn hình hiện tại]
+    E --> F([Kết thúc])
+    D -- Có --> G[Kết thúc phiên đăng nhập]
+    G --> H[Chuyển về màn hình đăng nhập]
+    H --> F
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor ND as Người dùng
+    participant HT as Hệ thống
+    ND->>HT: Chọn Đăng xuất
+    HT-->>ND: Yêu cầu xác nhận
+    alt Không xác nhận
+        ND-->>HT: Hủy
+        HT-->>ND: Giữ nguyên phiên
+    else Xác nhận
+        ND->>HT: Xác nhận đăng xuất
+        HT->>HT: Kết thúc phiên
+        HT-->>ND: Chuyển về màn hình đăng nhập
+    end
+```
+
+## **9.4. Quy trình nghiệp vụ Use Case “Xác thực và phân quyền người dùng theo vai trò”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Người dùng yêu cầu truy cập chức năng]
+    B --> C[Kiểm tra phiên đăng nhập]
+    C --> D{Đã đăng nhập?}
+    D -- Không --> E[Từ chối truy cập]
+    E --> F([Kết thúc])
+    D -- Có --> G[Xác định vai trò]
+    G --> H[Kiểm tra quyền của vai trò]
+    H --> I{Có quyền?}
+    I -- Không --> E
+    I -- Có --> J[Cho phép truy cập chức năng]
+    J --> F
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor ND as Người dùng
+    participant HT as Hệ thống
+    ND->>HT: Yêu cầu truy cập chức năng
+    HT->>HT: Kiểm tra phiên đăng nhập
+    alt Chưa đăng nhập
+        HT-->>ND: Từ chối truy cập
+    else Đã đăng nhập
+        HT->>HT: Xác định vai trò
+        HT->>HT: Kiểm tra quyền
+        alt Không có quyền
+            HT-->>ND: Thông báo không có quyền
+        else Có quyền
+            HT-->>ND: Cho phép truy cập
+        end
+    end
+```
+
+## **9.5. Quy trình nghiệp vụ Use Case “Xem và cập nhật thông tin cá nhân”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Chọn thông tin cá nhân]
+    B --> C[Hiển thị thông tin hiện tại]
+    C --> D[Chọn cập nhật]
+    D --> E[Chỉnh sửa thông tin]
+    E --> F{Thông tin hợp lệ?}
+    F -- Không --> G[Thông báo lỗi]
+    G --> E
+    F -- Có --> H[Lưu thông tin]
+    H --> I[Thông báo cập nhật thành công]
+    I --> J([Kết thúc])
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor ND as Người dùng
+    participant HT as Hệ thống
+    ND->>HT: Chọn thông tin cá nhân
+    HT-->>ND: Hiển thị thông tin
+    ND->>HT: Chọn cập nhật và nhập thông tin mới
+    HT->>HT: Kiểm tra dữ liệu
+    alt Dữ liệu không hợp lệ
+        HT-->>ND: Thông báo lỗi
+    else Hợp lệ
+        HT->>HT: Lưu thông tin
+        HT-->>ND: Thông báo cập nhật thành công
+    end
+```
+
+## **9.6. Quy trình nghiệp vụ Use Case “Tạo yêu cầu đặt xe”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Khách hàng nhập điểm đón, điểm đến, loại xe]
+    B --> C[Hệ thống kiểm tra thông tin]
+    C --> D{Thông tin hợp lệ?}
+    D -- Không --> E[Thông báo lỗi]
+    E --> B
+    D -- Có --> F[Hiển thị cước dự kiến]
+    F --> G[Chọn phương thức thanh toán]
+    G --> H[Tạo yêu cầu đặt xe]
+    H --> I{Tạo thành công?}
+    I -- Không --> J[Thông báo lỗi tạo yêu cầu]
+    J --> K([Kết thúc])
+    I -- Có --> L[Chuyển yêu cầu sang xử lý đặt xe]
+    L --> K
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor KH as Khách hàng
+    participant HT as Hệ thống
+    KH->>HT: Nhập điểm đón, điểm đến, loại xe
+    HT->>HT: Kiểm tra thông tin
+    alt Không hợp lệ
+        HT-->>KH: Thông báo lỗi
+    else Hợp lệ
+        HT-->>KH: Hiển thị cước dự kiến
+        KH->>HT: Chọn phương thức thanh toán
+        KH->>HT: Xác nhận đặt xe
+        HT->>HT: Tạo yêu cầu đặt xe
+        alt Tạo thất bại
+            HT-->>KH: Thông báo lỗi
+        else Tạo thành công
+            HT-->>KH: Xác nhận yêu cầu
+            HT->>HT: Chuyển sang xử lý tìm tài xế
+        end
+    end
+```
+
+## **9.7. Quy trình nghiệp vụ Use Case “Theo dõi trạng thái chuyến đi”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Khách hàng chọn chuyến đang diễn ra]
+    B --> C[Hệ thống kiểm tra chuyến của khách hàng]
+    C --> D{Có dữ liệu trạng thái/vị trí?}
+    D -- Không --> E[Thông báo chưa có dữ liệu]
+    E --> F([Kết thúc])
+    D -- Có --> G[Hiển thị trạng thái và vị trí]
+    G --> H[Khách hàng theo dõi]
+    H --> I{Chuyến đã kết thúc?}
+    I -- Không --> G
+    I -- Có --> F
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor KH as Khách hàng
+    participant HT as Hệ thống
+    KH->>HT: Chọn chuyến đang diễn ra
+    HT->>HT: Kiểm tra quyền và dữ liệu chuyến
+    alt Không có dữ liệu trạng thái/vị trí
+        HT-->>KH: Thông báo chưa có dữ liệu
+    else Có dữ liệu
+        HT-->>KH: Hiển thị trạng thái và vị trí
+        loop Khi chuyến chưa kết thúc
+            HT-->>KH: Cập nhật trạng thái/vị trí mới
+        end
+    end
+```
+
+## **9.8. Quy trình nghiệp vụ Use Case “Xem lịch sử chuyến đi và đánh giá tài xế”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Khách hàng mở lịch sử chuyến đi]
+    B --> C[Hệ thống hiển thị các chuyến đã hoàn thành]
+    C --> D[Chọn chuyến]
+    D --> E{Đã đánh giá?}
+    E -- Có --> F[Hiển thị đánh giá hiện có]
+    F --> G([Kết thúc])
+    E -- Không --> H[Nhập đánh giá]
+    H --> I{Đánh giá hợp lệ?}
+    I -- Không --> J[Thông báo lỗi]
+    J --> H
+    I -- Có --> K[Lưu đánh giá]
+    K --> G
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor KH as Khách hàng
+    participant HT as Hệ thống
+    KH->>HT: Mở lịch sử chuyến đi
+    HT-->>KH: Hiển thị lịch sử
+    KH->>HT: Chọn chuyến
+    HT->>HT: Kiểm tra trạng thái đánh giá
+    alt Đã đánh giá
+        HT-->>KH: Hiển thị đánh giá hiện có
+    else Chưa đánh giá
+        KH->>HT: Nhập và gửi đánh giá
+        HT->>HT: Kiểm tra đánh giá
+        alt Không hợp lệ
+            HT-->>KH: Thông báo lỗi
+        else Hợp lệ
+            HT->>HT: Lưu đánh giá
+            HT-->>KH: Thông báo thành công
+        end
+    end
+```
+
+## **9.9. Quy trình nghiệp vụ Use Case “Xem và cập nhật hồ sơ tài xế”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Tài xế/Nhân viên vận hành mở hồ sơ]
+    B --> C[Hệ thống hiển thị hồ sơ]
+    C --> D[Chọn cập nhật]
+    D --> E[Nhập thông tin mới]
+    E --> F{Thông tin hợp lệ?}
+    F -- Không --> G[Thông báo lỗi]
+    G --> E
+    F -- Có --> H[Lưu hồ sơ]
+    H --> I[Thông báo cập nhật thành công]
+    I --> J([Kết thúc])
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor ND as Tài xế/Nhân viên vận hành
+    participant HT as Hệ thống
+    ND->>HT: Mở hồ sơ tài xế
+    HT-->>ND: Hiển thị hồ sơ
+    ND->>HT: Nhập thông tin cập nhật
+    HT->>HT: Kiểm tra dữ liệu
+    alt Không hợp lệ
+        HT-->>ND: Thông báo lỗi
+    else Hợp lệ
+        HT->>HT: Lưu hồ sơ
+        HT-->>ND: Thông báo thành công
+    end
+```
+
+## **9.10. Quy trình nghiệp vụ Use Case “Quản lý thông tin phương tiện”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Mở quản lý phương tiện]
+    B --> C[Hiển thị phương tiện]
+    C --> D[Thêm hoặc cập nhật phương tiện]
+    D --> E[Nhập thông tin phương tiện]
+    E --> F{Thông tin hợp lệ?}
+    F -- Không --> G[Thông báo lỗi]
+    G --> E
+    F -- Có --> H[Lưu thông tin phương tiện]
+    H --> I[Thông báo thành công]
+    I --> J([Kết thúc])
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor ND as Tài xế/Nhân viên vận hành
+    participant HT as Hệ thống
+    ND->>HT: Mở quản lý phương tiện
+    HT-->>ND: Hiển thị danh sách
+    ND->>HT: Chọn thêm/cập nhật
+    ND->>HT: Nhập thông tin phương tiện
+    HT->>HT: Kiểm tra dữ liệu
+    alt Không hợp lệ
+        HT-->>ND: Thông báo lỗi
+    else Hợp lệ
+        HT->>HT: Lưu phương tiện
+        HT-->>ND: Thông báo thành công
+    end
+```
+
+## **9.11. Quy trình nghiệp vụ Use Case “Cập nhật trạng thái sẵn sàng”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Tài xế chọn trạng thái]
+    B --> C{Đang có chuyến?}
+    C -- Có --> D[Không cho chuyển sang Sẵn sàng]
+    D --> E([Kết thúc])
+    C -- Không --> F[Cập nhật trạng thái Sẵn sàng/Không sẵn sàng]
+    F --> G[Thông báo cập nhật thành công]
+    G --> E
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor TX as Tài xế
+    participant HT as Hệ thống
+    TX->>HT: Chọn trạng thái sẵn sàng
+    HT->>HT: Kiểm tra chuyến đang thực hiện
+    alt Đang có chuyến
+        HT-->>TX: Không cho chuyển sang Sẵn sàng
+    else Không có chuyến
+        HT->>HT: Cập nhật trạng thái
+        HT-->>TX: Thông báo cập nhật thành công
+    end
+```
+
+## **9.12. Quy trình nghiệp vụ Use Case “Nhận chuyến”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Tài xế nhận yêu cầu chuyến]
+    B --> C{Tài xế còn sẵn sàng và yêu cầu còn hiệu lực?}
+    C -- Không --> D[Thông báo chuyến không còn khả dụng]
+    D --> E([Kết thúc])
+    C -- Có --> F[Chấp nhận chuyến]
+    F --> G[Hệ thống gán chuyến cho tài xế]
+    G --> H[Thông báo nhận chuyến thành công]
+    H --> E
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor TX as Tài xế
+    participant HT as Hệ thống
+    TX->>HT: Chọn nhận chuyến
+    HT->>HT: Kiểm tra trạng thái tài xế và yêu cầu
+    alt Không còn khả dụng
+        HT-->>TX: Thông báo chuyến không khả dụng
+    else Còn khả dụng
+        HT->>HT: Gán chuyến cho tài xế
+        HT-->>TX: Thông báo nhận chuyến thành công
+    end
+```
+
+## **9.13. Quy trình nghiệp vụ Use Case “Từ chối chuyến”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Tài xế chọn từ chối chuyến]
+    B --> C{Xác nhận từ chối?}
+    C -- Không --> D[Giữ nguyên yêu cầu]
+    D --> E([Kết thúc])
+    C -- Có --> F[Ghi nhận tài xế từ chối]
+    F --> G[Chuyển yêu cầu sang tìm tài xế khác]
+    G --> H([Kết thúc])
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor TX as Tài xế
+    participant HT as Hệ thống
+    TX->>HT: Chọn từ chối chuyến
+    HT-->>TX: Yêu cầu xác nhận
+    alt Hủy từ chối
+        TX-->>HT: Hủy
+        HT-->>TX: Giữ nguyên yêu cầu
+    else Xác nhận từ chối
+        TX->>HT: Xác nhận
+        HT->>HT: Ghi nhận từ chối
+        HT->>HT: Tìm tài xế khác
+        HT-->>TX: Thông báo đã ghi nhận
+    end
+```
+
+## **9.14. Quy trình nghiệp vụ Use Case “Tiếp nhận và xử lý yêu cầu đặt xe”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Hệ thống tiếp nhận yêu cầu đặt xe]
+    B --> C[Kiểm tra thông tin khách hàng và chuyến]
+    C --> D{Yêu cầu hợp lệ?}
+    D -- Không --> E[Thông báo yêu cầu không hợp lệ]
+    E --> F([Kết thúc])
+    D -- Có --> G{Khách hàng đang có chuyến chưa hoàn thành?}
+    G -- Có --> E
+    G -- Không --> H[Tạo yêu cầu đặt xe]
+    H --> I[Chuyển sang tìm và phân công tài xế]
+    I --> F
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant KH as Khách hàng
+    participant HT as Hệ thống
+    KH->>HT: Gửi yêu cầu đặt xe
+    HT->>HT: Kiểm tra khách hàng và thông tin chuyến
+    alt Yêu cầu không hợp lệ / khách đang có chuyến
+        HT-->>KH: Thông báo không thể tiếp nhận
+    else Hợp lệ
+        HT->>HT: Tạo yêu cầu đặt xe
+        HT->>HT: Chuyển sang tìm tài xế
+        HT-->>KH: Xác nhận đã tiếp nhận
+    end
+```
+
+## **9.15. Quy trình nghiệp vụ Use Case “Tìm kiếm và phân công tài xế phù hợp”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Nhận yêu cầu đặt xe hợp lệ]
+    B --> C[Tìm tài xế đang sẵn sàng]
+    C --> D{Có tài xế phù hợp?}
+    D -- Không --> E[Thông báo chưa có tài xế phù hợp]
+    E --> F([Kết thúc])
+    D -- Có --> G[Lọc theo loại xe và vị trí]
+    G --> H[Ưu tiên tài xế phù hợp/gần]
+    H --> I[Gửi yêu cầu cho tài xế]
+    I --> J[Chờ phản hồi]
+    J --> K{Tài xế nhận?}
+    K -- Có --> L[Phân công tài xế]
+    L --> F
+    K -- Không --> M[Chuyển sang tài xế phù hợp tiếp theo]
+    M --> J
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant HT as Hệ thống
+    actor TX as Tài xế
+    participant KH as Khách hàng
+    HT->>HT: Nhận yêu cầu hợp lệ
+    HT->>HT: Tìm tài xế sẵn sàng
+    alt Không có tài xế phù hợp
+        HT-->>KH: Thông báo chưa có tài xế phù hợp
+    else Có tài xế
+        HT->>HT: Lọc theo loại xe và vị trí
+        HT->>TX: Gửi yêu cầu nhận chuyến
+        alt Tài xế nhận
+            TX->>HT: Chấp nhận
+            HT->>HT: Phân công tài xế
+            HT-->>KH: Thông báo tài xế được phân công
+        else Tài xế từ chối/không phản hồi
+            HT->>HT: Chuyển sang tài xế tiếp theo
+        end
+    end
+```
+
+## **9.16. Quy trình nghiệp vụ Use Case “Xử lý trường hợp tài xế không phản hồi hoặc từ chối”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Gửi yêu cầu cho tài xế]
+    B --> C[Theo dõi phản hồi]
+    C --> D{Tài xế phản hồi?}
+    D -- Có --> E{Chấp nhận?}
+    E -- Có --> F[Phân công tài xế]
+    F --> G([Kết thúc])
+    E -- Không --> H[Tìm tài xế tiếp theo]
+    D -- Không --> I[Hết thời gian phản hồi]
+    I --> H
+    H --> J{Còn tài xế phù hợp?}
+    J -- Có --> B
+    J -- Không --> K[Thông báo khách hàng chưa tìm được tài xế]
+    K --> G
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant HT as Hệ thống
+    actor TX as Tài xế
+    actor KH as Khách hàng
+    HT->>TX: Gửi yêu cầu nhận chuyến
+    HT->>HT: Theo dõi thời gian phản hồi
+    alt Tài xế chấp nhận
+        TX->>HT: Chấp nhận
+        HT->>HT: Kết thúc tìm kiếm và phân công
+    else Từ chối hoặc không phản hồi
+        HT->>HT: Ghi nhận kết quả
+        HT->>HT: Tìm tài xế phù hợp tiếp theo
+        alt Còn tài xế
+            HT->>TX: Gửi yêu cầu tiếp theo
+        else Không còn tài xế
+            HT-->>KH: Thông báo chưa tìm được tài xế
+        end
+    end
+```
+
+## **9.17. Quy trình nghiệp vụ Use Case “Cập nhật và theo dõi trạng thái, vị trí chuyến đi”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Tài xế được phân công]
+    B --> C[Tài xế cập nhật trạng thái/vị trí]
+    C --> D[Hệ thống ghi nhận dữ liệu]
+    D --> E{Chuyến đã kết thúc?}
+    E -- Không --> F[Cung cấp dữ liệu cho người theo dõi]
+    F --> C
+    E -- Có --> G[Chốt trạng thái chuyến]
+    G --> H[Không cho cập nhật tiếp]
+    H --> I([Kết thúc])
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor TX as Tài xế
+    participant HT as Hệ thống
+    actor KH as Khách hàng
+    TX->>HT: Cập nhật trạng thái/vị trí
+    HT->>HT: Ghi nhận dữ liệu
+    HT-->>KH: Cung cấp trạng thái/vị trí
+    loop Khi chuyến chưa kết thúc
+        TX->>HT: Cập nhật trạng thái/vị trí mới
+        HT-->>KH: Cập nhật dữ liệu
+    end
+    TX->>HT: Cập nhật hoàn thành chuyến
+    HT->>HT: Chốt trạng thái
+    HT-->>TX: Không cho cập nhật thêm
+```
+
+## **9.18. Quy trình nghiệp vụ Use Case “Theo dõi và quản lý các chuyến đang diễn ra”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Nhân viên vận hành mở danh sách chuyến]
+    B --> C[Hệ thống kiểm tra quyền]
+    C --> D{Có quyền?}
+    D -- Không --> E[Từ chối truy cập]
+    E --> F([Kết thúc])
+    D -- Có --> G[Hiển thị các chuyến đang diễn ra]
+    G --> H{Có chuyến?}
+    H -- Không --> I[Thông báo không có dữ liệu]
+    I --> F
+    H -- Có --> J[Chọn chuyến cần theo dõi]
+    J --> K[Xem và quản lý thông tin chuyến]
+    K --> F
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor NV as Nhân viên vận hành
+    participant HT as Hệ thống
+    NV->>HT: Mở danh sách chuyến đang diễn ra
+    HT->>HT: Kiểm tra quyền
+    alt Không có quyền
+        HT-->>NV: Từ chối truy cập
+    else Có quyền
+        HT->>HT: Truy vấn chuyến đang diễn ra
+        alt Không có chuyến
+            HT-->>NV: Thông báo không có dữ liệu
+        else Có chuyến
+            HT-->>NV: Hiển thị danh sách
+            NV->>HT: Chọn chuyến
+            HT-->>NV: Hiển thị thông tin chuyến
+        end
+    end
+```
+
+## **9.19. Quy trình nghiệp vụ Use Case “Hỗ trợ xử lý chuyến đi gặp sự cố”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Nhân viên vận hành tiếp nhận yêu cầu hỗ trợ]
+    B --> C[Kiểm tra thông tin sự cố]
+    C --> D{Thông tin đầy đủ?}
+    D -- Không --> E[Yêu cầu bổ sung thông tin]
+    E --> C
+    D -- Có --> F[Xác định hướng xử lý]
+    F --> G{Có thể xử lý?}
+    G -- Có --> H[Thực hiện xử lý]
+    H --> I[Ghi nhận kết quả]
+    I --> J[Thông báo kết quả]
+    G -- Không --> K[Ghi nhận chưa thể xử lý trực tiếp]
+    K --> J
+    J --> L([Kết thúc])
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor NV as Nhân viên vận hành
+    participant HT as Hệ thống
+    NV->>HT: Tiếp nhận yêu cầu hỗ trợ
+    NV->>HT: Kiểm tra thông tin sự cố
+    alt Thông tin chưa đầy đủ
+        HT-->>NV: Yêu cầu bổ sung thông tin
+        NV->>HT: Bổ sung thông tin
+    else Thông tin đầy đủ
+        NV->>HT: Xác định hướng xử lý
+        alt Có thể xử lý trực tiếp
+            NV->>HT: Thực hiện xử lý
+            HT->>HT: Ghi nhận kết quả
+            HT-->>NV: Xác nhận đã ghi nhận
+        else Không thể xử lý trực tiếp
+            HT->>HT: Ghi nhận trạng thái cần hỗ trợ thêm
+            HT-->>NV: Thông báo chưa thể xử lý trực tiếp
+        end
+    end
+```
+
+## **9.20. Quy trình nghiệp vụ Use Case “Tra cứu thông tin giao dịch”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Nhân viên vận hành nhập tiêu chí tra cứu]
+    B --> C[Hệ thống kiểm tra quyền]
+    C --> D{Có quyền?}
+    D -- Không --> E[Từ chối truy cập]
+    E --> F([Kết thúc])
+    D -- Có --> G[Tra cứu giao dịch]
+    G --> H{Có kết quả?}
+    H -- Không --> I[Thông báo không có giao dịch phù hợp]
+    I --> F
+    H -- Có --> J[Hiển thị thông tin giao dịch]
+    J --> F
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor NV as Nhân viên vận hành
+    participant HT as Hệ thống
+    NV->>HT: Nhập tiêu chí tra cứu
+    HT->>HT: Kiểm tra quyền
+    alt Không có quyền
+        HT-->>NV: Từ chối truy cập
+    else Có quyền
+        HT->>HT: Truy vấn giao dịch
+        alt Không có kết quả
+            HT-->>NV: Thông báo không có giao dịch phù hợp
+        else Có kết quả
+            HT-->>NV: Hiển thị thông tin giao dịch
+        end
+    end
+```
+
+## **9.21. Quy trình nghiệp vụ Use Case “Tính cước chuyến đi”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Chuyến đi có đủ thông tin]
+    B --> C[Hệ thống xác định loại xe và thông tin chuyến]
+    C --> D{Đủ thông tin tính cước?}
+    D -- Không --> E[Thông báo thiếu thông tin]
+    E --> F([Kết thúc])
+    D -- Có --> G[Áp dụng quy tắc tính cước]
+    G --> H[Tính cước]
+    H --> I[Lưu kết quả cước]
+    I --> J[Hiển thị cước]
+    J --> F
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant HT as Hệ thống
+    HT->>HT: Kiểm tra thông tin chuyến
+    alt Thiếu thông tin
+        HT-->>HT: Ghi nhận chưa thể tính cước
+    else Đủ thông tin
+        HT->>HT: Xác định loại xe và dữ liệu chuyến
+        HT->>HT: Áp dụng quy tắc tính cước
+        HT->>HT: Tính và lưu cước
+        HT-->>HT: Cập nhật cước cho chuyến
+    end
+```
+
+## **9.22. Quy trình nghiệp vụ Use Case “Lựa chọn và thực hiện thanh toán”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Khách hàng chọn phương thức thanh toán]
+    B --> C{Thanh toán tiền mặt hay điện tử?}
+    C -- Tiền mặt --> D[Ghi nhận phương thức tiền mặt]
+    D --> E[Chuyển trạng thái thanh toán]
+    C -- Điện tử --> F[Gửi yêu cầu đến nhà cung cấp thanh toán]
+    F --> G[Nhận kết quả]
+    G --> H{Thanh toán thành công?}
+    H -- Có --> I[Ghi nhận thành công]
+    H -- Không --> J[Ghi nhận thất bại]
+    I --> K([Kết thúc])
+    J --> K
+    E --> K
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor KH as Khách hàng
+    participant HT as Hệ thống
+    participant NTT as Nhà cung cấp thanh toán
+    KH->>HT: Chọn phương thức thanh toán
+    alt Tiền mặt
+        HT->>HT: Ghi nhận phương thức tiền mặt
+        HT-->>KH: Ghi nhận thanh toán theo phương thức đã chọn
+    else Thanh toán điện tử
+        KH->>HT: Xác nhận thanh toán
+        HT->>NTT: Gửi yêu cầu thanh toán
+        NTT-->>HT: Trả kết quả
+        alt Thành công
+            HT->>HT: Ghi nhận thành công
+            HT-->>KH: Thông báo thanh toán thành công
+        else Thất bại
+            HT->>HT: Ghi nhận thất bại
+            HT-->>KH: Thông báo thanh toán thất bại
+        end
+    end
+```
+
+## **9.23. Quy trình nghiệp vụ Use Case “Xử lý và ghi nhận kết quả thanh toán”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Nhận kết quả thanh toán]
+    B --> C[Kiểm tra thông tin giao dịch]
+    C --> D{Thông tin hợp lệ?}
+    D -- Không --> E[Không ghi nhận kết quả hợp lệ]
+    E --> F([Kết thúc])
+    D -- Có --> G[Kiểm tra trạng thái thanh toán]
+    G --> H[Cập nhật trạng thái]
+    H --> I[Lưu giao dịch]
+    I --> J([Kết thúc])
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant NTT as Nhà cung cấp thanh toán
+    participant HT as Hệ thống
+    NTT->>HT: Gửi kết quả thanh toán
+    HT->>HT: Kiểm tra thông tin giao dịch
+    alt Thông tin không hợp lệ
+        HT-->>NTT: Không ghi nhận kết quả hợp lệ
+    else Hợp lệ
+        HT->>HT: Cập nhật trạng thái thanh toán
+        HT->>HT: Lưu giao dịch
+        HT-->>NTT: Xác nhận đã ghi nhận
+    end
+```
+
+## **9.24. Quy trình nghiệp vụ Use Case “Xử lý giao dịch thất bại và thanh toán lại”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Phát hiện giao dịch thanh toán thất bại]
+    B --> C[Thông báo kết quả thất bại]
+    C --> D{Khách hàng chọn thanh toán lại?}
+    D -- Không --> E[Giữ trạng thái chưa thanh toán]
+    E --> F([Kết thúc])
+    D -- Có --> G[Gửi lại yêu cầu thanh toán]
+    G --> H{Thanh toán lại thành công?}
+    H -- Có --> I[Ghi nhận thanh toán thành công]
+    I --> F
+    H -- Không --> J[Giữ trạng thái thất bại]
+    J --> F
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor KH as Khách hàng
+    participant HT as Hệ thống
+    participant NTT as Nhà cung cấp thanh toán
+    HT-->>KH: Thông báo thanh toán thất bại
+    alt Không thanh toán lại
+        KH-->>HT: Hủy thanh toán lại
+        HT->>HT: Giữ trạng thái chưa thanh toán
+    else Thanh toán lại
+        KH->>HT: Chọn thanh toán lại
+        HT->>NTT: Gửi lại yêu cầu
+        NTT-->>HT: Trả kết quả
+        alt Thành công
+            HT->>HT: Ghi nhận thành công
+            HT-->>KH: Thông báo thành công
+        else Tiếp tục thất bại
+            HT->>HT: Giữ trạng thái thất bại
+            HT-->>KH: Thông báo thất bại
+        end
+    end
+```
+
+## **9.25. Quy trình nghiệp vụ Use Case “Gửi thông báo về trạng thái chuyến đi và thanh toán”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Phát sinh sự kiện chuyến đi/thanh toán]
+    B --> C[Xác định người nhận]
+    C --> D[Xác định nội dung và kênh thông báo]
+    D --> E[Gửi thông báo]
+    E --> F{Kênh chính khả dụng?}
+    F -- Có --> G[Thông báo thành công]
+    G --> H([Kết thúc])
+    F -- Không --> I[Chuyển sang kênh phù hợp khác]
+    I --> J{Gửi được?}
+    J -- Có --> G
+    J -- Không --> K[Ghi nhận trạng thái gửi thất bại]
+    K --> H
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant HT as Hệ thống
+    actor ND as Người nhận
+    participant K as Kênh thông báo
+    HT->>HT: Xác định sự kiện và người nhận
+    HT->>HT: Xác định nội dung/kênh
+    HT->>K: Gửi thông báo
+    alt Kênh chính hoạt động
+        K-->>ND: Nhận thông báo
+        K-->>HT: Xác nhận gửi
+    else Kênh chính không khả dụng
+        HT->>K: Gửi qua kênh phù hợp khác
+        alt Gửi thành công
+            K-->>ND: Nhận thông báo
+            K-->>HT: Xác nhận gửi
+        else Gửi thất bại
+            HT->>HT: Ghi nhận trạng thái gửi thất bại
+        end
+    end
+```
+
+## **9.26. Quy trình nghiệp vụ Use Case “Tổng hợp, thống kê và xem báo cáo hoạt động”**
+
+### Activity Diagram
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Người dùng chọn loại báo cáo và thời gian]
+    B --> C[Hệ thống kiểm tra quyền]
+    C --> D{Có quyền?}
+    D -- Không --> E[Từ chối truy cập]
+    E --> F([Kết thúc])
+    D -- Có --> G[Truy vấn dữ liệu]
+    G --> H{Có dữ liệu?}
+    H -- Không --> I[Thông báo không có dữ liệu]
+    I --> F
+    H -- Có --> J[Tổng hợp và thống kê]
+    J --> K[Hiển thị báo cáo]
+    K --> F
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor ND as Nhân viên vận hành/Ban lãnh đạo
+    participant HT as Hệ thống
+    ND->>HT: Chọn loại báo cáo và thời gian
+    HT->>HT: Kiểm tra quyền
+    alt Không có quyền
+        HT-->>ND: Từ chối truy cập
+    else Có quyền
+        HT->>HT: Truy vấn dữ liệu
+        alt Không có dữ liệu
+            HT-->>ND: Thông báo không có dữ liệu
+        else Có dữ liệu
+            HT->>HT: Tổng hợp và thống kê
+            HT-->>ND: Hiển thị báo cáo
+        end
+    end
+```
+
 
 
 
